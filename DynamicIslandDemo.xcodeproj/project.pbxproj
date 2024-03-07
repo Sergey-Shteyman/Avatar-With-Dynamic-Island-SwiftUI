@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EFE5B052B9A5A6900691DA4 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE5B042B9A5A6900691DA4 /* UIView.swift */; };
 		C46492582AB83ED80083CA3D /* IMG_7451.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C46492562AB83ED80083CA3D /* IMG_7451.PNG */; };
 		C46492592AB83ED80083CA3D /* IMG_7450.PNG in Resources */ = {isa = PBXBuildFile; fileRef = C46492572AB83ED80083CA3D /* IMG_7450.PNG */; };
 		C464925B2AB86A1B0083CA3D /* OpacityTransitionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C464925A2AB86A1B0083CA3D /* OpacityTransitionModifier.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5EFE5B042B9A5A6900691DA4 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		C41E45502A83A826009470CB /* DynamicIslandDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DynamicIslandDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C46492562AB83ED80083CA3D /* IMG_7451.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_7451.PNG; sourceTree = "<group>"; };
 		C46492572AB83ED80083CA3D /* IMG_7450.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_7450.PNG; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 		C4A00A2D2AA60FF600D5244A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5EFE5B042B9A5A6900691DA4 /* UIView.swift */,
 				C4A00A2E2AA60FF600D5244A /* CGFloat+Extenions.swift */,
 			);
 			path = Extensions;
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EFE5B052B9A5A6900691DA4 /* UIView.swift in Sources */,
 				C4A00A3F2AA60FF600D5244A /* User.swift in Sources */,
 				C4A00A422AA60FF600D5244A /* Application.swift in Sources */,
 				C4A00A3B2AA60FF600D5244A /* Const.swift in Sources */,

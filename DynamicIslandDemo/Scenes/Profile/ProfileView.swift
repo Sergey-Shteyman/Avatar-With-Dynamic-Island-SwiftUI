@@ -96,6 +96,7 @@ final class AvatarView: UIView {
             self.heighAnchorForFullAvatar?.isActive = true
             self.widthAnchorForFullAvatar?.isActive = true
             self.adaptiveTopAnchor?.constant = -60
+            self.haptics(.medium)
             self.layoutIfNeeded()
         })
     }
@@ -108,6 +109,7 @@ final class AvatarView: UIView {
             self.heighAnchorForHiddenAvatar?.isActive = true
             self.widthAnchorForHiddenAvatar?.isActive = true
             self.adaptiveTopAnchor?.constant = 30
+            self.haptics(.soft)
             self.layoutIfNeeded()
         })
     }
@@ -134,6 +136,7 @@ struct ProfileView: View {
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
+                // Сделать проверку есть ли островок и протеститтьь на 15 модель айфона
 //                if viewModel.isIslandShapeVisible {
 //                    Canvas { context, size in
 //                        context.addFilter(.alphaThreshold(min: 0.5, color: .black))
@@ -145,7 +148,7 @@ struct ProfileView: View {
 //                            }
 //                            if let image = ctx.resolveSymbol(id: Const.MainView.imageViewId) {
 //                                let yImageOffset = (Const.MainView.imageSize / 2) + Const.MainView.imageTopPadding
-//                                let yImagePosition = bounds.safeAreaInsets.top + yImageOffset + 22
+//                                let yImagePosition = bounds.safeAreaInsets.top + yImageOffset + 20.8
 //                                ctx.draw(image, at: CGPoint(x: size.width / 2, y: yImagePosition))
 //                            }
 //                        }
@@ -186,21 +189,21 @@ struct ProfileView: View {
             .fill(.black)
             .frame(width: Const.MainView.imageSize, height: Const.MainView.imageSize, alignment: .center)
             .scaleEffect(viewModel.scale)
-            .offset(y: max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(20)))
+            .offset(y: max(-viewModel.offset.y * 1.1, -Const.MainView.imageSize - 15))
             .tag(Const.MainView.imageViewId)
     }
 
     private func avatarView(offsetY: GeometryProxy) -> some View {
-        let height: CGFloat = showFullAvatar ? Const.MainView.fullImageSize : Const.MainView.imageSize
-        let width: CGFloat = showFullAvatar ? UIScreen.main.bounds.width : height
+        let offsetImage = max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
+        let negativeOffset = max(-viewModel.offset.y * 0.46, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         return AvatarViewRepresentable(offsetY: $showFullAvatar)
             .frame(height: 100)
             .scaleEffect(viewModel.scale)
-//            .blur(radius: viewModel.blur)
-//            .opacity(showFullAvatar ? 1 : viewModel.avatarOpacity)
-            .offset(y: max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(10)))
+            .blur(radius: viewModel.blur)
+            .opacity(showFullAvatar ? 1 : viewModel.avatarOpacity)
+            .offset(y: viewModel.offset.y < 0 ? negativeOffset : offsetImage)
             .onChange(of: viewModel.offset.y, perform: { offset in
-                if offset <= -10 && !showFullAvatar  {
+                if offset <= -30 && !showFullAvatar  {
                     showFullAvatar = true
                 }
                 if offset >= 10 && showFullAvatar {
@@ -326,7 +329,6 @@ struct ProfileView: View {
 }
 
 // MARK: - PreviewProvider
-
 struct ProfileView_Previews: PreviewProvider {
 
     static var previews: some View {

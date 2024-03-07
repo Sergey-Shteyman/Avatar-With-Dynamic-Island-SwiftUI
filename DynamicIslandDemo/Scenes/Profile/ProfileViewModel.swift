@@ -38,10 +38,9 @@ extension ProfileView {
         }
 
         var scale: CGFloat {
-            let coefficient = 1 / 1.2
+            let coefficient = 1 / 1.4
             let percentage = percentage * coefficient
             let scale = (percentage * (0 - 1) / 100) + 1
-//            return min(scale, 1)
             return scale
         }
 
@@ -54,7 +53,7 @@ extension ProfileView {
         }
 
         var avatarOpacity: CGFloat {
-            let coefficient = 2.2
+            let coefficient = 1.1
             let percentage = percentage * coefficient
             let opacity = (percentage * (0 - 1) / 100) + 1
             return min(opacity, 1)
@@ -125,5 +124,14 @@ extension ProfileView {
             let balancedValue = min(max(value, minValue), maxValue)
             return balancedValue
         }
+    }
+}
+
+
+// MARK: - PreviewProvider
+struct New_Previews: PreviewProvider {
+
+    static var previews: some View {
+        ProfileView(viewModel: .init(user: .mock()))
     }
 }
