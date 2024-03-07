@@ -41,7 +41,8 @@ extension ProfileView {
             let coefficient = 1 / 1.2
             let percentage = percentage * coefficient
             let scale = (percentage * (0 - 1) / 100) + 1
-            return min(scale, 1)
+//            return min(scale, 1)
+            return scale
         }
 
         var islandScale: CGFloat {

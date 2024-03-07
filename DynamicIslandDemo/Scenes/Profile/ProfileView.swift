@@ -8,8 +8,112 @@
 
 import SwiftUI
 
-// MARK: - ProfileView
 
+// 1) Следаить непосредственно за offsetY
+// 2) Дергать переключатель непосредственно в AvatarView
+
+// MARK: - AvatarViewRepresentable
+struct AvatarViewRepresentable: UIViewRepresentable {
+    
+    @Binding var offsetY: Bool
+    
+    func makeUIView(context: Context) -> AvatarView {
+        return AvatarView()
+    }
+
+    func updateUIView(_ uiView: AvatarView, context: Context) {
+        uiView.shouldShow = offsetY
+    }
+}
+
+// MARK: - AvatarView
+final class AvatarView: UIView {
+    
+    private var adaptiveTopAnchor: NSLayoutConstraint?
+    
+    private var heighAnchorForFullAvatar: NSLayoutConstraint?
+    private var widthAnchorForFullAvatar: NSLayoutConstraint?
+    
+    private var heighAnchorForHiddenAvatar: NSLayoutConstraint?
+    private var widthAnchorForHiddenAvatar: NSLayoutConstraint?
+    
+    private var firstOpen: Bool = true
+    
+    private lazy var avatarImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "Puslan"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 45
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    var shouldShow: Bool = false {
+        didSet {
+            if shouldShow == true {
+                shouldShowFullAvatar()
+            }
+            if shouldShow == false && !firstOpen {
+                shouldHideFullAvatar()
+            } else {
+                firstOpen = false
+            }
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupView() {
+        addSubview(avatarImageView)
+        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            avatarImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+        ])
+        
+        adaptiveTopAnchor = avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30)
+        adaptiveTopAnchor?.isActive = true
+        
+        heighAnchorForHiddenAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 90)
+        heighAnchorForHiddenAvatar?.isActive = true
+        widthAnchorForHiddenAvatar = avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor)
+        widthAnchorForHiddenAvatar?.isActive = true
+        
+        heighAnchorForFullAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 375)
+        widthAnchorForFullAvatar = avatarImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
+    }
+    
+    func shouldShowFullAvatar() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.avatarImageView.layer.cornerRadius = 0
+            self.heighAnchorForHiddenAvatar?.isActive = false
+            self.widthAnchorForHiddenAvatar?.isActive = false
+            self.heighAnchorForFullAvatar?.isActive = true
+            self.widthAnchorForFullAvatar?.isActive = true
+            self.adaptiveTopAnchor?.constant = -60
+            self.layoutIfNeeded()
+        })
+    }
+    
+    func shouldHideFullAvatar() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.avatarImageView.layer.cornerRadius = 45
+            self.heighAnchorForFullAvatar?.isActive = false
+            self.widthAnchorForFullAvatar?.isActive = false
+            self.heighAnchorForHiddenAvatar?.isActive = true
+            self.widthAnchorForHiddenAvatar?.isActive = true
+            self.adaptiveTopAnchor?.constant = 30
+            self.layoutIfNeeded()
+        })
+    }
+}
+
+// MARK: - ProfileView
 struct ProfileView: View {
 
     // MARK: - Private Properties
@@ -22,35 +126,36 @@ struct ProfileView: View {
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
-
+    
+    @State private var showFullAvatar: Bool = false
+    
     // MARK: - Body
 
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
-                if viewModel.isIslandShapeVisible {
-                    Canvas { context, size in
-                        context.addFilter(.alphaThreshold(min: 0.5, color: .black))
-                        context.addFilter(.blur(radius: 6))
-                        context.drawLayer { ctx in
-                            if let island = ctx.resolveSymbol(id: Const.MainView.islandViewId) {
-                                ctx.draw(island, at: CGPoint(x: (size.width / 2),
-                                                             y: viewModel.islandTopPadding + (viewModel.islandSize.height / 2)))
-                            }
-                            if let image = ctx.resolveSymbol(id: Const.MainView.imageViewId) {
-                                let yImageOffset = (Const.MainView.imageSize / 2) + Const.MainView.imageTopPadding
-                                let yImagePosition = bounds.safeAreaInsets.top + yImageOffset
-                                ctx.draw(image, at: CGPoint(x: size.width / 2, y: yImagePosition))
-                            }
-                        }
-                    } symbols: {
-                        islandShapeView()
-                        avatarShapeView()
-                    }
-                    .edgesIgnoringSafeArea(.top)
-                }
-
-                avatarView()
+//                if viewModel.isIslandShapeVisible {
+//                    Canvas { context, size in
+//                        context.addFilter(.alphaThreshold(min: 0.5, color: .black))
+//                        context.addFilter(.blur(radius: 6))
+//                        context.drawLayer { ctx in
+//                            if let island = ctx.resolveSymbol(id: Const.MainView.islandViewId) {
+//                                ctx.draw(island, at: CGPoint(x: (size.width / 2),
+//                                                             y: viewModel.islandTopPadding + (viewModel.islandSize.height / 2)))
+//                            }
+//                            if let image = ctx.resolveSymbol(id: Const.MainView.imageViewId) {
+//                                let yImageOffset = (Const.MainView.imageSize / 2) + Const.MainView.imageTopPadding
+//                                let yImagePosition = bounds.safeAreaInsets.top + yImageOffset + 22
+//                                ctx.draw(image, at: CGPoint(x: size.width / 2, y: yImagePosition))
+//                            }
+//                        }
+//                    } symbols: {
+//                        islandShapeView()
+//                        avatarShapeView()
+//                    }
+//                    .edgesIgnoringSafeArea(.top)
+//                }
+                avatarView(offsetY: bounds)
                 scrollView()
                 navigationButtons()
             }
@@ -85,17 +190,23 @@ struct ProfileView: View {
             .tag(Const.MainView.imageViewId)
     }
 
-    private func avatarView() -> some View {
-        Image(viewModel.userAvatarImageName)
-            .resizable()
-            .aspectRatio(1, contentMode: .fit)
-            .frame(width: Const.MainView.imageSize, height: Const.MainView.imageSize, alignment: .center)
-            .clipShape(Circle())
+    private func avatarView(offsetY: GeometryProxy) -> some View {
+        let height: CGFloat = showFullAvatar ? Const.MainView.fullImageSize : Const.MainView.imageSize
+        let width: CGFloat = showFullAvatar ? UIScreen.main.bounds.width : height
+        return AvatarViewRepresentable(offsetY: $showFullAvatar)
+            .frame(height: 100)
             .scaleEffect(viewModel.scale)
-            .blur(radius: viewModel.blur)
-            .opacity(viewModel.avatarOpacity)
+//            .blur(radius: viewModel.blur)
+//            .opacity(showFullAvatar ? 1 : viewModel.avatarOpacity)
             .offset(y: max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(10)))
-            .padding(.top, Const.MainView.imageTopPadding)
+            .onChange(of: viewModel.offset.y, perform: { offset in
+                if offset <= -10 && !showFullAvatar  {
+                    showFullAvatar = true
+                }
+                if offset >= 10 && showFullAvatar {
+                    showFullAvatar = false
+                }
+            })
     }
 
     private func scrollView() -> some View {
@@ -108,6 +219,11 @@ struct ProfileView: View {
                 alignment: .center,
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
+                Section(header: Text("")) {
+                    Text("\(viewModel.offset.y)")
+                    Text("\(viewModel.scale)")
+//                    AvatarViewRepresentable(offsetY: $showFullAvatar)
+                }
                 Section(header: headerView()) {
                     scrollViewCells()
                 }
@@ -141,8 +257,8 @@ struct ProfileView: View {
 
     private func scrollViewCells() -> some View {
         VStack(spacing: 24.0) {
-            generalSettingsCells()
-            headerSettingsCells()
+//            generalSettingsCells()
+//            headerSettingsCells()
             emptyCells()
         }
     }
@@ -163,7 +279,7 @@ struct ProfileView: View {
 
     private func emptyCells() -> some View {
         VStack {
-            ForEach(0..<15) { _ in
+            ForEach(0..<25) { _ in
                 ToggleCellView(isToggleOn: .constant(false), showToggle: false)
             }
         }

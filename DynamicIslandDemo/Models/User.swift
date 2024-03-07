@@ -22,10 +22,10 @@ struct User {
 extension User {
 
     static func mock(
-        name: String = "Konstantin",
-        avatarImageName: String = "avatar-image",
-        phoneNumber: String = "+380 66 666 6666",
-        nickname: String = "@stolyarenkoks"
+        name: String = "PuslAnus",
+        avatarImageName: String = "Puslan",
+        phoneNumber: String = "+99999999",
+        nickname: String = "@Puslanus"
     ) -> Self {
         .init(
             name: name,

@@ -32,7 +32,8 @@ enum Const {
         static let headerViewId = "Header"
 
         static let imageTopPadding: CGFloat = 8.0
-        static let imageSize: CGFloat = 100.0
+        static let imageSize: CGFloat = 90.0
+        static let fullImageSize: CGFloat = 370
     }
 
     enum OffsetObservingScrollView {
