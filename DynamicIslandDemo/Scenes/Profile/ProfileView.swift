@@ -132,13 +132,14 @@ struct ProfileView: View {
     }
     
     @State private var showFullAvatar: Bool = false
+    @State private var isIslandVisible: Bool = false
     
     // MARK: - Body
     
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
-                if isIslindVisible(with: bounds) {
+                if isIslandVisible {
                     if viewModel.isIslandShapeVisible {
                         Canvas { context, size in
                             context.addFilter(.alphaThreshold(min: 0.5, color: .black))
@@ -166,6 +167,9 @@ struct ProfileView: View {
                 navigationButtons()
             }
         }
+        .onAppear(perform: {
+            self.isIslandVisible = isIslindVisible()
+        })
         .background(Color(uiColor: .systemGray6))
         .onChange(of: scenePhase) { newPhase in
             let isActive = newPhase == .active
@@ -176,8 +180,8 @@ struct ProfileView: View {
         }
     }
     
-    func isIslindVisible(with bounds: GeometryProxy) -> Bool {
-        let topInset = bounds.safeAreaInsets.top
+    func isIslindVisible() -> Bool {
+        let topInset = getSafeArea().top
         if topInset > 47 {
             print("⛳️ Островок найден! \(topInset)")
             return true
