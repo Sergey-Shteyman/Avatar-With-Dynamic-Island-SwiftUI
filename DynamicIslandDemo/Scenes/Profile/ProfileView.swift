@@ -12,7 +12,7 @@ import SwiftUI
 
 // TODO: - Сделать еще страницу и сравнить со штатным расположением элементов на панели навигации
 
-// TODO: - Сделать анимацию для имени пользователя 
+// TODO: - Сделать анимацию для имени пользователя
 
 // MARK: - AvatarViewRepresentable
 struct AvatarViewRepresentable: UIViewRepresentable {
@@ -134,11 +134,11 @@ struct ProfileView: View {
     @State private var showFullAvatar: Bool = false
     
     // MARK: - Body
-
+    
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
-//                if getCurrentDeviceModel() == "iPhone15,1" { //.contains(Const.MainView.currentDevice) {
+                if isIslindVisible(with: bounds) {
                     if viewModel.isIslandShapeVisible {
                         Canvas { context, size in
                             context.addFilter(.alphaThreshold(min: 0.5, color: .black))
@@ -160,19 +160,11 @@ struct ProfileView: View {
                         }
                         .edgesIgnoringSafeArea(.top)
                     }
-                    avatarView(offsetY: bounds)
-                    scrollView()
-                    navigationButtons()
-            }
-            .onAppear {
-                let topInset = bounds.safeAreaInsets.top
-                if topInset > 47 {
-                    print("Островок найден! \(topInset)")
-                } else {
-                    print("Челка! \(topInset)")
                 }
+                avatarView(offsetY: bounds)
+                scrollView()
+                navigationButtons()
             }
-            //            }
         }
         .background(Color(uiColor: .systemGray6))
         .onChange(of: scenePhase) { newPhase in
@@ -182,33 +174,19 @@ struct ProfileView: View {
                 viewModel.isIslandShapeVisible = isActive
             }
         }
-        .onAppear {
-            print(getCurrentDeviceModel())
+    }
+    
+    func isIslindVisible(with bounds: GeometryProxy) -> Bool {
+        let topInset = bounds.safeAreaInsets.top
+        if topInset > 47 {
+            print("⛳️ Островок найден! \(topInset)")
+            return true
+        } else {
+            print("🍌 Челка! \(topInset)")
+            return false
         }
     }
     
-    func getCurrentDeviceModel() -> String {
-        let deviceModel = UIDevice.version()
-        let deviceName = UIDevice.current.name
-        let deviceSystemName = UIDevice.current.systemName
-        let deviceSystemVersion = UIDevice.current.systemVersion
-
-        return "Model: \(deviceModel), Name: \(deviceName), System Name: \(deviceSystemName), System Version: \(deviceSystemVersion)"
-    }
-    
-//    private func getCurrentDeviceModel() -> String {
-//        var systemInfo = utsname()
-//        uname(&systemInfo)
-//        let machineMirror = Mirror(reflecting: systemInfo.machine)
-//        let identifier = machineMirror.children.reduce("") { identifier, element in
-//            guard let value = element.value as? Int8, value != 0 else { return identifier }
-//            return identifier + String(UnicodeScalar(UInt8(value)))
-//        }
-//        print(identifier)
-//
-//        return identifier
-//    }
-
     // MARK: - Private Methods
 
     private func islandShapeView() -> some View {
@@ -263,7 +241,6 @@ struct ProfileView: View {
                 Section(header: Text("")) {
                     Text("\(viewModel.offset.y)")
                     Text("\(viewModel.scale)")
-//                    AvatarViewRepresentable(offsetY: $showFullAvatar)
                 }
                 Section(header: headerView()) {
                     scrollViewCells()
