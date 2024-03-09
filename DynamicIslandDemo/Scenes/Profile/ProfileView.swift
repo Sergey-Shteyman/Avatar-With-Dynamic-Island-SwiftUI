@@ -14,6 +14,8 @@ import SwiftUI
 
 // TODO: - Сделать анимацию для имени пользователя
 
+// TODO: - Сделать так чтобы расскрывалась по тапу
+
 // MARK: - AvatarViewRepresentable
 struct AvatarViewRepresentable: UIViewRepresentable {
     

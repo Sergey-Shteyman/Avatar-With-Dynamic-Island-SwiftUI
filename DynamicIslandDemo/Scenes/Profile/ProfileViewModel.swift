@@ -45,7 +45,7 @@ extension ProfileView {
         }
 
         var islandScale: CGFloat {
-            let coefficient: CGFloat = isZoomEffectEnabled ? 1.1 : 1.0
+            let coefficient: CGFloat = isZoomEffectEnabled ? 1.2 : 1.0
             var scaleFactor: CGFloat = 1
             scaleFactor = abs((offset.y / 1.5) - islandSize.height) / islandSize.height
             let percentage = min(max(scaleFactor, .zero), 1)
