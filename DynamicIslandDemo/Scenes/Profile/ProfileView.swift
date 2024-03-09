@@ -8,9 +8,11 @@
 
 import SwiftUI
 
+// TODO: - Разобраться как закрепляются кнопки на верхней панели
 
-// 1) Следаить непосредственно за offsetY
-// 2) Дергать переключатель непосредственно в AvatarView
+// TODO: - Сделать еще страницу и сравнить со штатным расположением элементов на панели навигации
+
+// TODO: - Сделать анимацию для имени пользователя 
 
 // MARK: - AvatarViewRepresentable
 struct AvatarViewRepresentable: UIViewRepresentable {
@@ -136,32 +138,41 @@ struct ProfileView: View {
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
-                // Сделать проверку есть ли островок и протеститтьь на 15 модель айфона
-//                if viewModel.isIslandShapeVisible {
-//                    Canvas { context, size in
-//                        context.addFilter(.alphaThreshold(min: 0.5, color: .black))
-//                        context.addFilter(.blur(radius: 6))
-//                        context.drawLayer { ctx in
-//                            if let island = ctx.resolveSymbol(id: Const.MainView.islandViewId) {
-//                                ctx.draw(island, at: CGPoint(x: (size.width / 2),
-//                                                             y: viewModel.islandTopPadding + (viewModel.islandSize.height / 2)))
-//                            }
-//                            if let image = ctx.resolveSymbol(id: Const.MainView.imageViewId) {
-//                                let yImageOffset = (Const.MainView.imageSize / 2) + Const.MainView.imageTopPadding
-//                                let yImagePosition = bounds.safeAreaInsets.top + yImageOffset + 20.8
-//                                ctx.draw(image, at: CGPoint(x: size.width / 2, y: yImagePosition))
-//                            }
-//                        }
-//                    } symbols: {
-//                        islandShapeView()
-//                        avatarShapeView()
-//                    }
-//                    .edgesIgnoringSafeArea(.top)
-//                }
-                avatarView(offsetY: bounds)
-                scrollView()
-                navigationButtons()
+//                if getCurrentDeviceModel() == "iPhone15,1" { //.contains(Const.MainView.currentDevice) {
+                    if viewModel.isIslandShapeVisible {
+                        Canvas { context, size in
+                            context.addFilter(.alphaThreshold(min: 0.5, color: .black))
+                            context.addFilter(.blur(radius: 6))
+                            context.drawLayer { ctx in
+                                if let island = ctx.resolveSymbol(id: Const.MainView.islandViewId) {
+                                    ctx.draw(island, at: CGPoint(x: (size.width / 2),
+                                                                 y: viewModel.islandTopPadding + (viewModel.islandSize.height / 2)))
+                                }
+                                if let image = ctx.resolveSymbol(id: Const.MainView.imageViewId) {
+                                    let yImageOffset = (Const.MainView.imageSize / 2) + Const.MainView.imageTopPadding
+                                    let yImagePosition = bounds.safeAreaInsets.top + yImageOffset + 22
+                                    ctx.draw(image, at: CGPoint(x: size.width / 2, y: yImagePosition))
+                                }
+                            }
+                        } symbols: {
+                            islandShapeView()
+                            avatarShapeView()
+                        }
+                        .edgesIgnoringSafeArea(.top)
+                    }
+                    avatarView(offsetY: bounds)
+                    scrollView()
+                    navigationButtons()
             }
+            .onAppear {
+                let topInset = bounds.safeAreaInsets.top
+                if topInset > 47 {
+                    print("Островок найден! \(topInset)")
+                } else {
+                    print("Челка! \(topInset)")
+                }
+            }
+            //            }
         }
         .background(Color(uiColor: .systemGray6))
         .onChange(of: scenePhase) { newPhase in
@@ -171,7 +182,32 @@ struct ProfileView: View {
                 viewModel.isIslandShapeVisible = isActive
             }
         }
+        .onAppear {
+            print(getCurrentDeviceModel())
+        }
     }
+    
+    func getCurrentDeviceModel() -> String {
+        let deviceModel = UIDevice.version()
+        let deviceName = UIDevice.current.name
+        let deviceSystemName = UIDevice.current.systemName
+        let deviceSystemVersion = UIDevice.current.systemVersion
+
+        return "Model: \(deviceModel), Name: \(deviceName), System Name: \(deviceSystemName), System Version: \(deviceSystemVersion)"
+    }
+    
+//    private func getCurrentDeviceModel() -> String {
+//        var systemInfo = utsname()
+//        uname(&systemInfo)
+//        let machineMirror = Mirror(reflecting: systemInfo.machine)
+//        let identifier = machineMirror.children.reduce("") { identifier, element in
+//            guard let value = element.value as? Int8, value != 0 else { return identifier }
+//            return identifier + String(UnicodeScalar(UInt8(value)))
+//        }
+//        print(identifier)
+//
+//        return identifier
+//    }
 
     // MARK: - Private Methods
 
@@ -185,11 +221,13 @@ struct ProfileView: View {
     }
 
     private func avatarShapeView() -> some View {
-        Circle()
+        let offsetImage = max(-viewModel.offset.y * 1.16, -Const.MainView.imageSize - 12)
+        let negativeOffset = max(-viewModel.offset.y * 0.65, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
+        return Circle()
             .fill(.black)
             .frame(width: Const.MainView.imageSize, height: Const.MainView.imageSize, alignment: .center)
             .scaleEffect(viewModel.scale)
-            .offset(y: max(-viewModel.offset.y * 1.1, -Const.MainView.imageSize - 15))
+            .offset(y: viewModel.offset.y < 0 ? negativeOffset : offsetImage)
             .tag(Const.MainView.imageViewId)
     }
 

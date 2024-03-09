@@ -30,6 +30,8 @@ enum Const {
         static let imageViewId = "Image"
         static let islandViewId = "Island"
         static let headerViewId = "Header"
+        
+        static let currentDevice = "iPhone15"
 
         static let imageTopPadding: CGFloat = 8.0
         static let imageSize: CGFloat = 90.0
