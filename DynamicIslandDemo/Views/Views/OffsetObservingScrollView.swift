@@ -48,7 +48,7 @@ struct OffsetObservingScrollView<Content: View>: View {
                 of: isScrolling,
                 perform: { _ in
                     guard isHeaderPagingEnabled,
-                          offset.y < Const.OffsetObservingScrollView.openOffsetPosition && offset.y > 0,
+                           offset.y > 0,
                           !isScrolling else { return }
                     let shouldShowBottom = offset.y > Const.OffsetObservingScrollView.openOffsetPosition / 2
                     let anchor: UnitPoint = shouldShowBottom ? .top : .bottom
@@ -60,3 +60,12 @@ struct OffsetObservingScrollView<Content: View>: View {
         }
     }
 }
+
+// MARK: - OffsetObservingScrollView_Previews
+struct OffsetObservingScrollView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        ProfileView(viewModel: .init(user: .mock()))
+    }
+}
+
