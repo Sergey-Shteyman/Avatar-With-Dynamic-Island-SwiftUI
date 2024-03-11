@@ -98,7 +98,7 @@ extension ProfileView {
         }
 
         var headerPadding: CGFloat {
-            interpolateValue(maxValue: 18.0, percent: 100 - percentage)
+            interpolateValue(maxValue: 10, percent: 100 - percentage)
         }
 
         // MARK: - Private Properties

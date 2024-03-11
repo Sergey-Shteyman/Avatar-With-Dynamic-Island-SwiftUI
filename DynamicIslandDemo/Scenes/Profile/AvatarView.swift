@@ -75,12 +75,12 @@ final class AvatarView: UIView {
         adaptiveTopAnchor = avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30)
         adaptiveTopAnchor?.isActive = true
         
-        heighAnchorForHiddenAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 90)
+        heighAnchorForHiddenAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: Const.MainView.imageSize)
         heighAnchorForHiddenAvatar?.isActive = true
         widthAnchorForHiddenAvatar = avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor)
         widthAnchorForHiddenAvatar?.isActive = true
         
-        heighAnchorForFullAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 375)
+        heighAnchorForFullAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: Const.MainView.fullImageSize)
         widthAnchorForFullAvatar = avatarImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
     }
     

@@ -11,7 +11,7 @@ import SwiftUI
 // TODO: - Сделать адапатинвое появление и расположение фона и кнопок панели навигации
 // c 15 pro max до 14 про все ок. Потом дефолтный идет больше пикселей на 10
 
-// TODO: - Отрегулировать верхний баунс-эффект. Слишком долго идет расширение панели навигации
+// TODO: - Имя Puslanus съезжает ниже при растягивании автарки
 
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
 
@@ -150,20 +150,19 @@ struct ProfileView: View {
                     scrollViewCells()
                 }
             }
-            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 20)
+            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + Const.MainView.offsetObservingScrollViewPadding)
             .padding(.horizontal, 16)
         }
-        .padding(.top, 4)
         .scrollDismissesKeyboard(.interactively)
     }
 
     private func headerView() -> some View {
         // Если закрыт включаем формулы, а если открыт то готовые значения
         // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
-        VStack(spacing: 4.0) {
+        VStack(spacing: 2.0) {
             Text(viewModel.userName)
                 .font(.system(size: viewModel.titleFontSize, weight: .medium))
-            HStack(spacing: 4.0) {
+            HStack(spacing: 2.0) {
                 Text(viewModel.userPhoneNumber)
                 Text(Const.General.bulletPointSymbol)
                 Text(viewModel.userNickname)
