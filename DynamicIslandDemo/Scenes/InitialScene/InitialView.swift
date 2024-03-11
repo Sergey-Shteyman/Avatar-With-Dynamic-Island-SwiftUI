@@ -25,6 +25,7 @@ struct InitialView: View {
                 .frame(maxWidth: .infinity)
             }
             .background(Color(uiColor: .systemGroupedBackground))
+            .navigationTitle("Sex")
             .toolbar(content: {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
@@ -38,5 +39,3 @@ struct InitialView: View {
     }
     
 }
-
-
