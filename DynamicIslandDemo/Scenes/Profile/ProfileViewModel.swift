@@ -62,7 +62,7 @@ extension ProfileView {
         var headerOpacity: CGFloat {
             let coefficient = 1.0
             let percentage = percentage * coefficient
-            let opacity = (percentage * (0 - 1) / 100) + 1
+            let opacity = (percentage * (0 - 1) / 90) + 1
             return min(opacity, 1)
         }
 
@@ -90,11 +90,11 @@ extension ProfileView {
         }
 
         var titleFontSize: CGFloat {
-            interpolateValue(minValue: 18.0, maxValue: 32.0, percent: 100 - percentage)
+            interpolateValue(minValue: 17.0, maxValue: 28.0, percent: 100 - percentage)
         }
 
         var descriptionFontSize: CGFloat {
-            interpolateValue(minValue: 14.0, maxValue: 17.0, percent: 100 - percentage)
+            interpolateValue(minValue: 16.0, maxValue: 16.0, percent: 100 - percentage)
         }
 
         var headerPadding: CGFloat {

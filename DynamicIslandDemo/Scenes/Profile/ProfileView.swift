@@ -8,11 +8,13 @@
 
 import SwiftUI
 
-// TODO: - Разобраться как закрепляются кнопки на верхней панели
+// TODO: - Сделать адапатинвое появление офна панели навигации
 
-// TODO: - Сделать еще страницу и сравнить со штатным расположением элементов на панели навигации
+// TODO: -  Сравнить расположение кнопок и заголовка на других устройствах модели айфона
 
-// TODO: - Сделать анимацию для имени пользователя
+// TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
+
+// TODO: - Подогнать заголовок панели навигации с кнопкой на панели на разных устройствах
 
 // TODO: - Сделать так чтобы расскрывалась по тапу
 
@@ -147,26 +149,23 @@ struct ProfileView: View {
                 alignment: .center,
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
-                Section(header: Text("")) {
-                    Text("\(viewModel.offset.y)")
-                    Text("\(viewModel.scale)")
-                }
                 Section(header: headerView()) {
                     scrollViewCells()
                 }
             }
-            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding)
+            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 20)
             .padding(.horizontal)
         }
-        .padding(.top, Const.MainView.imageTopPadding)
+        .padding(.top, 4)
         .scrollDismissesKeyboard(.interactively)
     }
 
     private func headerView() -> some View {
+        // Если закрыт включаем формулы, а если открыт то готовые значения
+        // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
         VStack(spacing: 4.0) {
             Text(viewModel.userName)
                 .font(.system(size: viewModel.titleFontSize, weight: .medium))
-
             HStack(spacing: 4.0) {
                 Text(viewModel.userPhoneNumber)
                 Text(Const.General.bulletPointSymbol)
@@ -178,8 +177,10 @@ struct ProfileView: View {
             .padding(.bottom, viewModel.headerPadding)
         }
         .frame(maxWidth: .infinity)
-        .background(Color(uiColor: .systemGray6))
         .id(Const.MainView.headerViewId)
+        .onTapGesture {
+            dismiss()
+        }
     }
 
     private func scrollViewCells() -> some View {

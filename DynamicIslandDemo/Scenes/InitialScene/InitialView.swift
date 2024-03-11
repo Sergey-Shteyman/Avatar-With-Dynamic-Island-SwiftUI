@@ -34,6 +34,7 @@ struct InitialView: View {
                     })
                 }
             })
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar(.visible, for: .navigationBar)
         })
     }
