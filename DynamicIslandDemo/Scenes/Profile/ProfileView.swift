@@ -16,111 +16,13 @@ import SwiftUI
 
 // TODO: - Сделать так чтобы расскрывалась по тапу
 
-// MARK: - AvatarViewRepresentable
-struct AvatarViewRepresentable: UIViewRepresentable {
-    
-    @Binding var offsetY: Bool
-    
-    func makeUIView(context: Context) -> AvatarView {
-        return AvatarView()
-    }
+// TODO: - ПОдогнать аватарку и все текста по размеру, чтобы было как в нашей прилке
 
-    func updateUIView(_ uiView: AvatarView, context: Context) {
-        uiView.shouldShow = offsetY
-    }
-}
-
-// MARK: - AvatarView
-final class AvatarView: UIView {
-    
-    private var adaptiveTopAnchor: NSLayoutConstraint?
-    
-    private var heighAnchorForFullAvatar: NSLayoutConstraint?
-    private var widthAnchorForFullAvatar: NSLayoutConstraint?
-    
-    private var heighAnchorForHiddenAvatar: NSLayoutConstraint?
-    private var widthAnchorForHiddenAvatar: NSLayoutConstraint?
-    
-    private var firstOpen: Bool = true
-    
-    private lazy var avatarImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "Puslan"))
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 45
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    var shouldShow: Bool = false {
-        didSet {
-            if shouldShow == true {
-                shouldShowFullAvatar()
-            }
-            if shouldShow == false && !firstOpen {
-                shouldHideFullAvatar()
-            } else {
-                firstOpen = false
-            }
-        }
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupView() {
-        addSubview(avatarImageView)
-        avatarImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            avatarImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        ])
-        
-        adaptiveTopAnchor = avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30)
-        adaptiveTopAnchor?.isActive = true
-        
-        heighAnchorForHiddenAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 90)
-        heighAnchorForHiddenAvatar?.isActive = true
-        widthAnchorForHiddenAvatar = avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor)
-        widthAnchorForHiddenAvatar?.isActive = true
-        
-        heighAnchorForFullAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: 375)
-        widthAnchorForFullAvatar = avatarImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
-    }
-    
-    func shouldShowFullAvatar() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.avatarImageView.layer.cornerRadius = 0
-            self.heighAnchorForHiddenAvatar?.isActive = false
-            self.widthAnchorForHiddenAvatar?.isActive = false
-            self.heighAnchorForFullAvatar?.isActive = true
-            self.widthAnchorForFullAvatar?.isActive = true
-            self.adaptiveTopAnchor?.constant = -60
-            self.haptics(.medium)
-            self.layoutIfNeeded()
-        })
-    }
-    
-    func shouldHideFullAvatar() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.avatarImageView.layer.cornerRadius = 45
-            self.heighAnchorForFullAvatar?.isActive = false
-            self.widthAnchorForFullAvatar?.isActive = false
-            self.heighAnchorForHiddenAvatar?.isActive = true
-            self.widthAnchorForHiddenAvatar?.isActive = true
-            self.adaptiveTopAnchor?.constant = 30
-            self.haptics(.soft)
-            self.layoutIfNeeded()
-        })
-    }
-}
 
 // MARK: - ProfileView
 struct ProfileView: View {
+    
+    @Environment(\.dismiss) var dismiss
 
     // MARK: - Private Properties
 
@@ -169,6 +71,7 @@ struct ProfileView: View {
                 navigationButtons()
             }
         }
+        .toolbar(.hidden)
         .onAppear(perform: {
             self.isIslandVisible = isIslindVisible()
         })
@@ -311,41 +214,15 @@ struct ProfileView: View {
 
     private func navigationButtons() -> some View {
         HStack {
-            if viewModel.isAvatarHidden {
-                Button {
-                    print("QR button tapped")
-                } label: {
-                    Image(systemName: "qrcode").imageScale(.large)
-                }
-                .opacityTransition(move: .top)
-            }
-
             Spacer()
-
             Button {
-                print("\(viewModel.isAvatarHidden ? "Edit" : "Search") button tapped")
+                dismiss()
             } label: {
-                if viewModel.isAvatarHidden {
-                    AnyView(Text("Edit"))
-                        .opacityTransition(move: .top)
-                } else {
-                    if viewModel.isHeaderPinningEnabled {
-                        AnyView(Image(systemName: "magnifyingglass").imageScale(.large))
-                            .opacityTransition(move: .bottom)
-                    }
-                }
+                AnyView(Text("Edit"))
             }
         }
         .padding(.horizontal, 16.0)
         .padding(.top, 4.0)
-        .onChange(
-            of: viewModel.percentage,
-            perform: { value in
-                withAnimation(.linear(duration: 0.2)) {
-                    viewModel.isAvatarHidden = !(value == 100)
-                }
-            }
-        )
     }
 }
 
