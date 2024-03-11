@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Имя Puslanus съезжает ниже при растягивании автарки
-
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
 
 // TODO: - Сделать так чтобы расскрывалась по тапу
@@ -157,8 +155,6 @@ struct ProfileView: View {
     private func headerView() -> some View {
         // Если закрыт включаем формулы, а если открыт то готовые значения
         // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
-        
-        // Можно сделать костыль и в зависимости от наличия островка менять высоту панели навигации вручную
         VStack(spacing: 2.0) {
             Text(viewModel.userName)
                 .font(.system(size: viewModel.titleFontSize, weight: .medium))
@@ -167,13 +163,13 @@ struct ProfileView: View {
                 Text(Const.General.bulletPointSymbol)
                 Text(viewModel.userNickname)
             }
-            .frame(height: max(20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
+            .frame(height: max(showFullAvatar ? 20 : 20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
             .opacity(viewModel.headerOpacity)
             .padding(.bottom, viewModel.headerPadding)
             Divider()
-                .opacity(!showFullAvatar && viewModel.offset.y > 70 ? 1 : 0)
+                .opacity(!showFullAvatar && viewModel.offset.y > 90 ? 1 : 0)
         }
         .frame(maxWidth: .infinity)
         .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
