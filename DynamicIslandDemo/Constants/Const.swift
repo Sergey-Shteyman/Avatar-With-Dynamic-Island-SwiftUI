@@ -36,7 +36,6 @@ enum Const {
         static let imageTopPadding: CGFloat = 8.0
         static let imageSize: CGFloat = 90.0
         static let fullImageSize: CGFloat = 375
-        static let offsetObservingScrollViewPadding: CGFloat = 30
     }
 
     enum OffsetObservingScrollView {

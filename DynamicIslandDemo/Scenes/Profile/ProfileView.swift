@@ -8,9 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Сделать адапатинвое появление и расположение фона и кнопок панели навигации
-// c 15 pro max до 14 про все ок. Потом дефолтный идет больше пикселей на 10
-
 // TODO: - Имя Puslanus съезжает ниже при растягивании автарки
 
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
@@ -35,14 +32,14 @@ struct ProfileView: View {
     }
     
     @State private var showFullAvatar: Bool = false
-    @State private var isIslandVisible: Bool = false
+    @State private var isIsland: Bool = false
     
     // MARK: - Body
     
     var body: some View {
         GeometryReader { bounds in
             ZStack(alignment: .top) {
-                if isIslandVisible {
+                if isIsland {
                     if viewModel.isIslandShapeVisible {
                         Canvas { context, size in
                             context.addFilter(.alphaThreshold(min: 0.5, color: .black))
@@ -72,7 +69,7 @@ struct ProfileView: View {
         }
         .toolbar(.hidden)
         .onAppear(perform: {
-            self.isIslandVisible = isIslindVisible()
+            self.isIsland = isIslindVisible()
         })
         .background(Color(uiColor: .systemGray6))
         .onChange(of: scenePhase) { newPhase in
@@ -150,15 +147,18 @@ struct ProfileView: View {
                     scrollViewCells()
                 }
             }
-            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + Const.MainView.offsetObservingScrollViewPadding)
+            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 25)
             .padding(.horizontal, 16)
         }
+        .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2) // чуть чуть пониже если нет челки
         .scrollDismissesKeyboard(.interactively)
     }
 
     private func headerView() -> some View {
         // Если закрыт включаем формулы, а если открыт то готовые значения
         // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
+        
+        // Можно сделать костыль и в зависимости от наличия островка менять высоту панели навигации вручную
         VStack(spacing: 2.0) {
             Text(viewModel.userName)
                 .font(.system(size: viewModel.titleFontSize, weight: .medium))
@@ -167,7 +167,7 @@ struct ProfileView: View {
                 Text(Const.General.bulletPointSymbol)
                 Text(viewModel.userNickname)
             }
-            .frame(height: max(20 - pow(viewModel.offset.y * 0.05, 2), 0)) // Сделал экспоненциальный рост с минимальным значением 0
+            .frame(height: max(20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
             .opacity(viewModel.headerOpacity)
@@ -224,7 +224,7 @@ struct ProfileView: View {
             }
         }
         .padding(.horizontal, 16.0)
-        .padding(.top, 4.0)
+        .padding(.top, self.isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
     }
 }
 
