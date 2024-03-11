@@ -8,17 +8,14 @@
 
 import SwiftUI
 
-// TODO: - Сделать адапатинвое появление офна панели навигации
+// TODO: - Сделать адапатинвое появление и расположение фона и кнопок панели навигации
+// c 15 pro max до 14 про все ок. Потом дефолтный идет больше пикселей на 10
 
-// TODO: -  Сравнить расположение кнопок и заголовка на других устройствах модели айфона
+// TODO: - Отрегулировать верхний баунс-эффект. Слишком долго идет расширение панели навигации
 
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
 
-// TODO: - Подогнать заголовок панели навигации с кнопкой на панели на разных устройствах
-
 // TODO: - Сделать так чтобы расскрывалась по тапу
-
-// TODO: - ПОдогнать аватарку и все текста по размеру, чтобы было как в нашей прилке
 
 
 // MARK: - ProfileView
@@ -154,7 +151,7 @@ struct ProfileView: View {
                 }
             }
             .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 20)
-            .padding(.horizontal)
+            .padding(.horizontal, 16)
         }
         .padding(.top, 4)
         .scrollDismissesKeyboard(.interactively)
@@ -171,12 +168,17 @@ struct ProfileView: View {
                 Text(Const.General.bulletPointSymbol)
                 Text(viewModel.userNickname)
             }
+            .frame(height: max(20 - pow(viewModel.offset.y * 0.05, 2), 0)) // Сделал экспоненциальный рост с минимальным значением 0
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
             .opacity(viewModel.headerOpacity)
             .padding(.bottom, viewModel.headerPadding)
+            Divider()
+                .opacity(!showFullAvatar && viewModel.offset.y > 70 ? 1 : 0)
         }
         .frame(maxWidth: .infinity)
+        .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
+        .padding(.horizontal, -16)
         .id(Const.MainView.headerViewId)
         .onTapGesture {
             dismiss()
