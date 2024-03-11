@@ -10,6 +10,12 @@ import SwiftUI
 
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
 
+// TODO: - Сделать максимальное значение по увеличению масштаба для открытой аватарки
+
+// TODO: - Менять цвет имени пользователя в зависимости от открытой аватарки
+
+// TODO: - Сделать адаптиацию шрифтов под увелчиенные шрифты
+
 // TODO: - Сделать так чтобы расскрывалась по тапу
 
 
@@ -123,10 +129,14 @@ struct ProfileView: View {
             .offset(y: viewModel.offset.y < 0 ? negativeOffset : offsetImage)
             .onChange(of: viewModel.offset.y, perform: { offset in
                 if offset <= -30 && !showFullAvatar  {
-                    showFullAvatar = true
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showFullAvatar = true
+                    }
                 }
                 if offset >= 10 && showFullAvatar {
-                    showFullAvatar = false
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showFullAvatar = false
+                    }
                 }
             })
     }
@@ -156,6 +166,10 @@ struct ProfileView: View {
         // Если закрыт включаем формулы, а если открыт то готовые значения
         // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
         VStack(spacing: 2.0) {
+            Rectangle()
+                .foregroundStyle(.clear)
+                .frame(maxWidth: .infinity)
+                .frame(height: showFullAvatar ? 125 : 0)
             Text(viewModel.userName)
                 .font(.system(size: viewModel.titleFontSize, weight: .medium))
             HStack(spacing: 2.0) {
