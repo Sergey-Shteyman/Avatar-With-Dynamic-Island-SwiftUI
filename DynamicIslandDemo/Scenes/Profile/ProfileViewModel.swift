@@ -90,11 +90,13 @@ extension ProfileView {
         }
 
         var titleFontSize: CGFloat {
-            interpolateValue(minValue: 17.0, maxValue: 28.0, percent: 100 - percentage)
+            interpolateValue(minValue: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                             maxValue: UIFont.preferredFont(forTextStyle: .title1).pointSize, percent: 100 - percentage)
         }
 
         var descriptionFontSize: CGFloat {
-            interpolateValue(minValue: 16.0, maxValue: 16.0, percent: 100 - percentage)
+            interpolateValue(minValue: UIFont.preferredFont(forTextStyle: .callout).pointSize,
+                             maxValue: UIFont.preferredFont(forTextStyle: .callout).pointSize, percent: 100 - percentage)
         }
 
         var headerPadding: CGFloat {

@@ -8,12 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
-
-// TODO: - Менять цвет имени пользователя в зависимости от открытой аватарки
-
-// TODO: - Сделать адаптиацию шрифтов под увелчиенные шрифты
-
 // TODO: - Сделать так чтобы расскрывалась по тапу
 
 // TODO: - Попробовать сделать чуть сложнее растягивание авы и по короче анимацию для смещения контента страницы
@@ -173,10 +167,10 @@ struct ProfileView: View {
             Rectangle()
                 .foregroundStyle(.clear)
                 .frame(maxWidth: .infinity)
-                .frame(height: showFullAvatar ? 125 : 0)
+                .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0) // 125 или 110 28 - UIFont.preferredFont(forTextStyle: .title1).pointSize
             HStack {
                 Text(viewModel.userName)
-                    .font(.system(size: showFullAvatar ? 20 : viewModel.titleFontSize, weight: .medium))
+                    .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
                     .foregroundStyle(showFullAvatar ? .white : .black)
                 if showFullAvatar {
                     Spacer()
@@ -194,7 +188,7 @@ struct ProfileView: View {
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
             .opacity(viewModel.headerOpacity)
-            .padding(.bottom, viewModel.headerPadding)
+            .padding(.bottom, showFullAvatar ? viewModel.headerPadding + 10.0 - (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : viewModel.headerPadding) // 25 если увеличенный и 10 если не увеличенный
             Divider()
                 .opacity(!showFullAvatar && viewModel.offset.y > 90 ? 1 : 0)
                 .padding(.horizontal, -16)
