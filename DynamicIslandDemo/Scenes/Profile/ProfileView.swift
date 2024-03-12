@@ -176,7 +176,8 @@ struct ProfileView: View {
                 .frame(height: showFullAvatar ? 125 : 0)
             HStack {
                 Text(viewModel.userName)
-                    .font(.system(size: viewModel.titleFontSize, weight: .medium))
+                    .font(.system(size: showFullAvatar ? 20 : viewModel.titleFontSize, weight: .medium))
+                    .foregroundStyle(showFullAvatar ? .white : .black)
                 if showFullAvatar {
                     Spacer()
                 }
@@ -243,6 +244,7 @@ struct ProfileView: View {
                 dismiss()
             } label: {
                 AnyView(Text("Edit"))
+                    .foregroundStyle(showFullAvatar ? .white : .blue)
             }
         }
         .padding(.horizontal, 16.0)
