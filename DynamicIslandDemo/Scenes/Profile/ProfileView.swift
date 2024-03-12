@@ -10,13 +10,17 @@ import SwiftUI
 
 // TODO: - Сделать анимацию для имени пользователя перезжаение вниз и влево при раскрытой аватарке.
 
-// TODO: - Сделать максимальное значение по увеличению масштаба для открытой аватарки
-
 // TODO: - Менять цвет имени пользователя в зависимости от открытой аватарки
 
 // TODO: - Сделать адаптиацию шрифтов под увелчиенные шрифты
 
 // TODO: - Сделать так чтобы расскрывалась по тапу
+
+// TODO: - Попробовать сделать чуть сложнее растягивание авы и по короче анимацию для смещения контента страницы
+
+// TODO: - Перенести проект в приложение
+
+// TODO: - Добавить градиент под заголовки
 
 
 // MARK: - ProfileView
@@ -170,12 +174,20 @@ struct ProfileView: View {
                 .foregroundStyle(.clear)
                 .frame(maxWidth: .infinity)
                 .frame(height: showFullAvatar ? 125 : 0)
-            Text(viewModel.userName)
-                .font(.system(size: viewModel.titleFontSize, weight: .medium))
+            HStack {
+                Text(viewModel.userName)
+                    .font(.system(size: viewModel.titleFontSize, weight: .medium))
+                if showFullAvatar {
+                    Spacer()
+                }
+            }
             HStack(spacing: 2.0) {
                 Text(viewModel.userPhoneNumber)
                 Text(Const.General.bulletPointSymbol)
                 Text(viewModel.userNickname)
+                if showFullAvatar {
+                    Spacer()
+                }
             }
             .frame(height: max(showFullAvatar ? 20 : 20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
             .foregroundColor(Color(uiColor: .systemGray))
@@ -184,10 +196,10 @@ struct ProfileView: View {
             .padding(.bottom, viewModel.headerPadding)
             Divider()
                 .opacity(!showFullAvatar && viewModel.offset.y > 90 ? 1 : 0)
+                .padding(.horizontal, -16)
         }
         .frame(maxWidth: .infinity)
         .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
-        .padding(.horizontal, -16)
         .id(Const.MainView.headerViewId)
         .onTapGesture {
             dismiss()
