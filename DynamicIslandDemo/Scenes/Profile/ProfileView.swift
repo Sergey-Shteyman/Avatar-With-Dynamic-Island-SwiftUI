@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Сделать так чтобы расскрывалась по тапу
-
 // TODO: - Попробовать сделать чуть сложнее растягивание авы и по короче анимацию для смещения контента страницы
 
 // TODO: - Перенести проект в приложение
@@ -173,7 +171,7 @@ struct ProfileView: View {
             HStack {
                 Text(viewModel.userName)
                     .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
-                    .foregroundStyle(showFullAvatar ? .white : .black)
+                    .foregroundStyle(showFullAvatar ? .white : colorScheme == .dark ? .white : .black)
                 if showFullAvatar {
                     Spacer()
                 }
