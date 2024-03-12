@@ -40,7 +40,7 @@ extension ProfileView {
         var scale: CGFloat {
             let coefficient = 1 / 1.4
             let percentage = percentage * coefficient
-            let scale = (percentage * (0 - 1) / 100) + 1
+            let scale = (percentage * (0 - 1) / (offset.y > 0 ? 100 : 300)) + 1
             return scale
         }
 

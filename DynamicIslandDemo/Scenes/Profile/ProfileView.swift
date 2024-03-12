@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-// TODO: - Попробовать сделать чуть сложнее растягивание авы и по короче анимацию для смещения контента страницы
+// TODO: - Сделать расстояние от вверхней границы чуть больше при свернутой полностью аватарке
 
 // TODO: - Перенести проект в приложение
 
@@ -106,8 +106,8 @@ struct ProfileView: View {
     }
 
     private func avatarShapeView() -> some View {
-        let offsetImage = max(-viewModel.offset.y * 1.16, -Const.MainView.imageSize - 12)
-        let negativeOffset = max(-viewModel.offset.y * 0.65, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
+        let offsetImage = max(-viewModel.offset.y * 1.19, -Const.MainView.imageSize - 12)
+        let negativeOffset = max(-viewModel.offset.y * 0.15, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         return Circle()
             .fill(.black)
             .frame(width: Const.MainView.imageSize, height: Const.MainView.imageSize, alignment: .center)
@@ -118,7 +118,7 @@ struct ProfileView: View {
 
     private func avatarView(offsetY: GeometryProxy) -> some View {
         let offsetImage = max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
-        let negativeOffset = max(-viewModel.offset.y * 0.46, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
+        let negativeOffset = max(-viewModel.offset.y * 0.1, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         return AvatarViewRepresentable(offsetY: $showFullAvatar)
             .frame(height: 100)
             .scaleEffect(viewModel.scale)
@@ -196,6 +196,7 @@ struct ProfileView: View {
         .frame(maxWidth: .infinity)
         .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
         .id(Const.MainView.headerViewId)
+        .offset(y: showFullAvatar ? viewModel.offset.y * 0.3 : 0)
     }
     
     private func tapArea() -> some View {
