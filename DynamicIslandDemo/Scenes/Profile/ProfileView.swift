@@ -33,6 +33,7 @@ struct ProfileView: View {
     }
     
     @State private var showFullAvatar: Bool = false
+    @State private var offsetTimer: Bool = false
     @State private var isIsland: Bool = false
     
     // MARK: - Body
@@ -130,11 +131,13 @@ struct ProfileView: View {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showFullAvatar = true
                     }
+                        offsetTimer = true
                 }
                 if offset >= 10 && showFullAvatar {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showFullAvatar = false
                     }
+                        offsetTimer = false
                 }
             })
     }
@@ -170,7 +173,7 @@ struct ProfileView: View {
                 .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
                 Text(viewModel.userName)
-                    .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
+                    .font(self.offsetTimer ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
                     .foregroundStyle(showFullAvatar ? .white : colorScheme == .dark ? .white : .black)
                 if showFullAvatar {
                     Spacer()
@@ -196,7 +199,7 @@ struct ProfileView: View {
         .frame(maxWidth: .infinity)
         .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
         .id(Const.MainView.headerViewId)
-        .offset(y: showFullAvatar ? viewModel.offset.y * 0.3 : 0)
+        .offset(y: showFullAvatar ?  viewModel.offset.y * 0.3 : 0)
     }
     
     private func tapArea() -> some View {
