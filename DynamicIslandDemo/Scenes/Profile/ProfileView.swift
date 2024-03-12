@@ -21,6 +21,7 @@ import SwiftUI
 struct ProfileView: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
 
     // MARK: - Private Properties
 
@@ -67,6 +68,7 @@ struct ProfileView: View {
                 avatarView(offsetY: bounds)
                 scrollView()
                 navigationButtons()
+                tapArea()
             }
         }
         .toolbar(.hidden)
@@ -167,7 +169,7 @@ struct ProfileView: View {
             Rectangle()
                 .foregroundStyle(.clear)
                 .frame(maxWidth: .infinity)
-                .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0) // 125 или 110 28 - UIFont.preferredFont(forTextStyle: .title1).pointSize
+                .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
                 Text(viewModel.userName)
                     .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
@@ -196,30 +198,31 @@ struct ProfileView: View {
         .frame(maxWidth: .infinity)
         .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
         .id(Const.MainView.headerViewId)
-        .onTapGesture {
-            dismiss()
+    }
+    
+    private func tapArea() -> some View {
+        if viewModel.offset.y == 0 {
+            return AnyView(
+                Rectangle()
+                    .ignoresSafeArea()
+                    .frame(maxWidth: showFullAvatar ? .infinity : 90)
+                    .frame(height: showFullAvatar ? 310 : 90)
+                    .foregroundStyle(.red)
+                    .opacity(0.01)
+                    .padding(.top, showFullAvatar ? 0 : 30)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            showFullAvatar.toggle()
+                        }
+                    }
+            )
         }
+        return AnyView(EmptyView())
     }
 
     private func scrollViewCells() -> some View {
         VStack(spacing: 24.0) {
-//            generalSettingsCells()
-//            headerSettingsCells()
             emptyCells()
-        }
-    }
-
-    private func generalSettingsCells() -> some View {
-        VStack(spacing: 24.0) {
-            ToggleCellView(parameterName: "Indicators", isToggleOn: $viewModel.showsIndicators)
-            ToggleCellView(parameterName: "Zoom Effect", isToggleOn: $viewModel.isZoomEffectEnabled)
-        }
-    }
-
-    private func headerSettingsCells() -> some View {
-        VStack {
-            ToggleCellView(parameterName: "Header Paging", isToggleOn: $viewModel.isHeaderPagingEnabled)
-            ToggleCellView(parameterName: "Header Pinning", isToggleOn: $viewModel.isHeaderPinningEnabled)
         }
     }
 
