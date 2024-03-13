@@ -11,14 +11,14 @@ import SwiftUI
 // MARK: - AvatarViewRepresentable
 struct AvatarViewRepresentable: UIViewRepresentable {
     
-    @Binding var offsetY: Bool
+    @Binding var shouldShow: Bool
     
     func makeUIView(context: Context) -> AvatarView {
         return AvatarView()
     }
 
     func updateUIView(_ uiView: AvatarView, context: Context) {
-        uiView.shouldShow = offsetY
+        uiView.shouldShow = shouldShow
     }
 }
 

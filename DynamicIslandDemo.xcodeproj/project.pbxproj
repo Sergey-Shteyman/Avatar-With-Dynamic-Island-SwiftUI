@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5EAF9DE02B9EEA2000C926C6 /* InitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF9DDF2B9EEA2000C926C6 /* InitialView.swift */; };
 		5EAF9DE22B9EEBD900C926C6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF9DE12B9EEBD900C926C6 /* AvatarView.swift */; };
+		5EF38D232BA21E6F003B3F70 /* LableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF38D222BA21E6F003B3F70 /* LableView.swift */; };
 		5EFE5B052B9A5A6900691DA4 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE5B042B9A5A6900691DA4 /* UIView.swift */; };
 		5EFE5B082B9AF2AE00691DA4 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE5B072B9AF2AE00691DA4 /* UIDevice.swift */; };
 		5EFE5B0A2B9C5F0500691DA4 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE5B092B9C5F0500691DA4 /* View.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		5EAF9DDF2B9EEA2000C926C6 /* InitialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialView.swift; sourceTree = "<group>"; };
 		5EAF9DE12B9EEBD900C926C6 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		5EF38D222BA21E6F003B3F70 /* LableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LableView.swift; sourceTree = "<group>"; };
 		5EFE5B042B9A5A6900691DA4 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		5EFE5B072B9AF2AE00691DA4 /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		5EFE5B092B9C5F0500691DA4 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
@@ -76,6 +78,15 @@
 			path = InitialScene;
 			sourceTree = "<group>";
 		};
+		5EF38D212BA21E5B003B3F70 /* HelperViews */ = {
+			isa = PBXGroup;
+			children = (
+				5EAF9DE12B9EEBD900C926C6 /* AvatarView.swift */,
+				5EF38D222BA21E6F003B3F70 /* LableView.swift */,
+			);
+			path = HelperViews;
+			sourceTree = "<group>";
+		};
 		C41E45472A83A826009470CB = {
 			isa = PBXGroup;
 			children = (
@@ -104,9 +115,9 @@
 		C47B7CEB2AFCE70500FA4781 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				5EF38D212BA21E5B003B3F70 /* HelperViews */,
 				C47B7CEC2AFCE71B00FA4781 /* ProfileView.swift */,
 				C47B7CEE2AFCE72700FA4781 /* ProfileViewModel.swift */,
-				5EAF9DE12B9EEBD900C926C6 /* AvatarView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -338,6 +349,7 @@
 				C4A00A402AA60FF600D5244A /* CGFloat+Extenions.swift in Sources */,
 				C464925B2AB86A1B0083CA3D /* OpacityTransitionModifier.swift in Sources */,
 				C47B7CEF2AFCE72700FA4781 /* ProfileViewModel.swift in Sources */,
+				5EF38D232BA21E6F003B3F70 /* LableView.swift in Sources */,
 				C4A00A442AA60FF600D5244A /* ScrollStatusModifier.swift in Sources */,
 				C4A00A462AA60FF600D5244A /* PositionObservingView.swift in Sources */,
 				5EAF9DE22B9EEBD900C926C6 /* AvatarView.swift in Sources */,

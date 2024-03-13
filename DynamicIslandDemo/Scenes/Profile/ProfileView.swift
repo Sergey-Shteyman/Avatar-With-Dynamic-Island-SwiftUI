@@ -8,7 +8,15 @@
 
 import SwiftUI
 
-// TODO: - Сделать расстояние от вверхней границы чуть больше при свернутой полностью аватарке
+// TODO: - Проверить еще раз все заголовки в панели навигации 
+
+// TODO: - Сделать переход цвета из темного в белый плавнее
+
+// TODO: - Сделать проверку на первое откртие(чтобы не было некорретного обновления ui)
+
+// TODO: - Адаптировать под большой размер шрифта
+
+// TODO: - исправить все косяки которые тут стали видны рпи переносе текста на UIkit
 
 // TODO: - Перенести проект в приложение
 
@@ -33,7 +41,6 @@ struct ProfileView: View {
     }
     
     @State private var showFullAvatar: Bool = false
-    @State private var offsetTimer: Bool = false
     @State private var isIsland: Bool = false
     
     // MARK: - Body
@@ -120,7 +127,7 @@ struct ProfileView: View {
     private func avatarView(offsetY: GeometryProxy) -> some View {
         let offsetImage = max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         let negativeOffset = max(-viewModel.offset.y * 0.1, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
-        return AvatarViewRepresentable(offsetY: $showFullAvatar)
+        return AvatarViewRepresentable(shouldShow: $showFullAvatar)
             .frame(height: 100)
             .scaleEffect(viewModel.scale)
             .blur(radius: viewModel.blur)
@@ -131,13 +138,11 @@ struct ProfileView: View {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showFullAvatar = true
                     }
-                        offsetTimer = true
                 }
                 if offset >= 10 && showFullAvatar {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         showFullAvatar = false
                     }
-                        offsetTimer = false
                 }
             })
     }
@@ -156,25 +161,22 @@ struct ProfileView: View {
                     scrollViewCells()
                 }
             }
-            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 25)
+            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 30)
             .padding(.horizontal, 16)
         }
-        .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2) // чуть чуть пониже если нет челки
+        .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
         .scrollDismissesKeyboard(.interactively)
     }
 
     private func headerView() -> some View {
-        // Если закрыт включаем формулы, а если открыт то готовые значения
-        // Возмонжо ввести еще одну переменную, которая будет срабатывать с анимацией
         VStack(spacing: 2.0) {
             Rectangle()
                 .foregroundStyle(.clear)
                 .frame(maxWidth: .infinity)
                 .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
-                Text(viewModel.userName)
-                    .font(self.offsetTimer ? .title3 : .system(size: viewModel.titleFontSize, weight: .medium))
-                    .foregroundStyle(showFullAvatar ? .white : colorScheme == .dark ? .white : .black)
+                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: $showFullAvatar, fontSize: viewModel.titleFontSize)
+                    .frame(height: showFullAvatar ? 25 : 20)
                 if showFullAvatar {
                     Spacer()
                 }
@@ -187,6 +189,7 @@ struct ProfileView: View {
                     Spacer()
                 }
             }
+            .padding(.top, showFullAvatar ? 0 : 10)
             .frame(height: max(showFullAvatar ? 20 : 20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
@@ -226,6 +229,7 @@ struct ProfileView: View {
         VStack(spacing: 24.0) {
             emptyCells()
         }
+        .padding(.top, viewModel.offset.y > 0 ? viewModel.offset.y / 9 : 0)
     }
 
     private func emptyCells() -> some View {
