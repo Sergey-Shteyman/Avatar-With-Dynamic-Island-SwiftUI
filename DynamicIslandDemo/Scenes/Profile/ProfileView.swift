@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-// TODO: - Проверить еще раз все заголовки в панели навигации 
+// TODO: - Проверить еще раз все заголовки в панели навигации. Чуть поднять чем сейчас
 
 // TODO: - Сделать переход цвета из темного в белый плавнее
 
@@ -173,7 +173,7 @@ struct ProfileView: View {
             Rectangle()
                 .foregroundStyle(.clear)
                 .frame(maxWidth: .infinity)
-                .frame(height: showFullAvatar ? 125 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
+                .frame(height: showFullAvatar ? 115 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
                 LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: $showFullAvatar, fontSize: viewModel.titleFontSize)
                     .frame(height: showFullAvatar ? 25 : 20)
@@ -194,7 +194,7 @@ struct ProfileView: View {
             .foregroundColor(Color(uiColor: .systemGray))
             .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
             .opacity(viewModel.headerOpacity)
-            .padding(.bottom, showFullAvatar ? viewModel.headerPadding + 10.0 - (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : viewModel.headerPadding) // 25 если увеличенный и 10 если не увеличенный
+            .padding(.bottom, showFullAvatar ? viewModel.headerPadding + 20.0 - (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize)  : viewModel.headerPadding) // 25 если увеличенный и 10 если не увеличенный
             Divider()
                 .opacity(!showFullAvatar && viewModel.offset.y > 90 ? 1 : 0)
                 .padding(.horizontal, -16)
