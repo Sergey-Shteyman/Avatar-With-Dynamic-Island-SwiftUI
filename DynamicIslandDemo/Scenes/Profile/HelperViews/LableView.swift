@@ -82,21 +82,27 @@ final class LableView: UIView {
     }
     
     func shouldShowFullAvatar() {
+        UIView.transition(with: self.label, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.label.textColor = .white
+        }, completion: nil)
+        
         UIView.animate(withDuration: 0.25, animations: {
             self.centerContentAlignment?.isActive = false
             self.leadingContentAlignment?.isActive = true
             self.label.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-            self.label.textColor = .white
             self.layoutIfNeeded()
         })
     }
-    
+
     func shouldHideFullAvatar() {
+        UIView.transition(with: self.label, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.label.textColor = UIScreen.main.traitCollection.userInterfaceStyle == .dark ? .white : .black
+        }, completion: nil)
+        
         UIView.animate(withDuration: 0.25, animations: {
             self.leadingContentAlignment?.isActive = false
             self.centerContentAlignment?.isActive = true
             self.label.transform = CGAffineTransform.identity
-            self.label.textColor = UIScreen.main.traitCollection.userInterfaceStyle == .dark ? .white : .black
             self.layoutIfNeeded()
         })
     }
