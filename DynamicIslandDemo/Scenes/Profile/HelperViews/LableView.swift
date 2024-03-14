@@ -13,7 +13,7 @@ struct LabelViewRepresentable: UIViewRepresentable {
     
     var text: String
     
-    @Binding var isShowFullAvatar: Bool
+    var isShowFullAvatar: Bool
     
     var fontSize: CGFloat
 
@@ -98,4 +98,13 @@ final class LableView: UIView {
         })
     }
     
+}
+
+
+// MARK: - PreviewProvider
+struct LableView_Previews: PreviewProvider {
+
+    static var previews: some View {
+        ProfileView(viewModel: .init(user: .mock()))
+    }
 }

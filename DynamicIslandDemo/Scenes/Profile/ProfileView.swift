@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Проверить еще раз все заголовки в панели навигации. Чуть поднять чем сейчас
-
 // TODO: - Сделать переход цвета из темного в белый плавнее
 
 // TODO: - Сделать проверку на первое откртие(чтобы не было некорретного обновления ui)
@@ -127,7 +125,7 @@ struct ProfileView: View {
     private func avatarView(offsetY: GeometryProxy) -> some View {
         let offsetImage = max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         let negativeOffset = max(-viewModel.offset.y * 0.1, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
-        return AvatarViewRepresentable(shouldShow: $showFullAvatar)
+        return AvatarViewRepresentable(shouldShow: showFullAvatar)
             .frame(height: 100)
             .scaleEffect(viewModel.scale)
             .blur(radius: viewModel.blur)
@@ -175,8 +173,8 @@ struct ProfileView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: showFullAvatar ? 115 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
-                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: $showFullAvatar, fontSize: viewModel.titleFontSize)
-                    .frame(height: showFullAvatar ? 25 : 20)
+                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: showFullAvatar, fontSize: viewModel.titleFontSize)
+                    .frame(height: showFullAvatar ? 25 : viewModel.titleFontSize - 4)
                 if showFullAvatar {
                     Spacer()
                 }

@@ -11,7 +11,7 @@ import SwiftUI
 // MARK: - AvatarViewRepresentable
 struct AvatarViewRepresentable: UIViewRepresentable {
     
-    @Binding var shouldShow: Bool
+    var shouldShow: Bool
     
     func makeUIView(context: Context) -> AvatarView {
         return AvatarView()
