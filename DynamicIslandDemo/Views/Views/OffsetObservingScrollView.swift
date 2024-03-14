@@ -65,7 +65,9 @@ struct OffsetObservingScrollView<Content: View>: View {
 struct OffsetObservingScrollView_Previews: PreviewProvider {
 
     static var previews: some View {
-        ProfileView(viewModel: .init(user: .mock()))
+        ProfileView(viewModel: .init(user: .mock())) {
+            emptyCells()
+        }
     }
 }
 

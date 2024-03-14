@@ -14,7 +14,7 @@ import SwiftUI
 
 
 // MARK: - ProfileView
-struct ProfileView: View {
+struct ProfileView<Content: View>: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -25,9 +25,12 @@ struct ProfileView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     // MARK: - Init
-
-    init(viewModel: ViewModel) {
+    
+    let content: Content
+        
+    init(viewModel: ViewModel, @ViewBuilder content: () -> Content) {
         self.viewModel = viewModel
+        self.content = content()
     }
     
     @State private var showFullAvatar: Bool = false
@@ -148,7 +151,8 @@ struct ProfileView: View {
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
                 Section(header: headerView()) {
-                    scrollViewCells()
+                    content
+                        .padding(.top, viewModel.offset.y > 0 ? viewModel.offset.y / 9 : 0)
                 }
             }
             .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 30)
@@ -216,21 +220,6 @@ struct ProfileView: View {
         return AnyView(EmptyView())
     }
 
-    private func scrollViewCells() -> some View {
-        VStack(spacing: 24.0) {
-            emptyCells()
-        }
-        .padding(.top, viewModel.offset.y > 0 ? viewModel.offset.y / 9 : 0)
-    }
-
-    private func emptyCells() -> some View {
-        VStack {
-            ForEach(0..<25) { _ in
-                ToggleCellView(isToggleOn: .constant(false), showToggle: false)
-            }
-        }
-    }
-
     private func navigationButtons() -> some View {
         HStack {
             Spacer()
@@ -250,6 +239,8 @@ struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
 
     static var previews: some View {
-        ProfileView(viewModel: .init(user: .mock()))
+        ProfileView(viewModel: .init(user: .mock())) {
+            emptyCells()
+        }
     }
 }

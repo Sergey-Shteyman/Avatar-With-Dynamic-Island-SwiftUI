@@ -16,7 +16,9 @@ struct InitialView: View {
             ScrollView {
                 VStack {
                     NavigationLink {
-                        ProfileView(viewModel: .init())
+                        ProfileView(viewModel: .init()) {
+                            emptyCells()
+                        }
                     } label: {
                         Text("Profile")
                     }
@@ -39,4 +41,18 @@ struct InitialView: View {
         })
     }
     
+}
+
+func scrollViewCells() -> some View {
+    VStack(spacing: 24.0) {
+        emptyCells()
+    }
+}
+
+func emptyCells() -> some View {
+    VStack {
+        ForEach(0..<25) { _ in
+            ToggleCellView(isToggleOn: .constant(false), showToggle: false)
+        }
+    }
 }

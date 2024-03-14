@@ -114,6 +114,8 @@ final class LableView: UIView {
 struct LableView_Previews: PreviewProvider {
 
     static var previews: some View {
-        ProfileView(viewModel: .init(user: .mock()))
+        ProfileView(viewModel: .init(user: .mock())) {
+            emptyCells()
+        }
     }
 }
