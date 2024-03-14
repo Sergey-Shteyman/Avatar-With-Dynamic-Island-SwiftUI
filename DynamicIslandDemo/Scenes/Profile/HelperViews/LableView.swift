@@ -12,11 +12,9 @@ import SwiftUI
 struct LabelViewRepresentable: UIViewRepresentable {
     
     var text: String
-    
     var isShowFullAvatar: Bool
-    
     var fontSize: CGFloat
-
+    
     func makeUIView(context: Context) -> LableView {
         let label = LableView()
         label.label.text = text
@@ -37,6 +35,8 @@ final class LableView: UIView {
     private var centerContentAlignment: NSLayoutConstraint?
     private var leadingContentAlignment: NSLayoutConstraint?
     
+    private var firstOpen: Bool = true
+    
     lazy var label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -50,8 +50,11 @@ final class LableView: UIView {
         didSet {
             if isShowFullAvatar {
                 shouldShowFullAvatar()
-            } else {
+            } 
+            if !isShowFullAvatar && !firstOpen {
                 shouldHideFullAvatar()
+            } else {
+                firstOpen = false
             }
         }
     }
