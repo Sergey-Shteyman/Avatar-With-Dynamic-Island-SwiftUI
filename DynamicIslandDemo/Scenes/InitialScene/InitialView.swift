@@ -16,7 +16,7 @@ struct InitialView: View {
             ScrollView {
                 VStack {
                     NavigationLink {
-                        ProfileView(viewModel: .init()) {
+                        ConstructorProfileView(viewModel: .init()) {
                             emptyCells()
                         }
                     } label: {

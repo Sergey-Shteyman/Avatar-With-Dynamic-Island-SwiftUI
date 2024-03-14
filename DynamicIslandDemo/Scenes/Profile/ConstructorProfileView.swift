@@ -14,7 +14,7 @@ import SwiftUI
 
 
 // MARK: - ProfileView
-struct ProfileView<Content: View>: View {
+struct ConstructorProfileView<Content: View>: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -239,7 +239,7 @@ struct ProfileView<Content: View>: View {
 struct ProfileView_Previews: PreviewProvider {
 
     static var previews: some View {
-        ProfileView(viewModel: .init(user: .mock())) {
+        ConstructorProfileView(viewModel: .init(user: .mock())) {
             emptyCells()
         }
     }

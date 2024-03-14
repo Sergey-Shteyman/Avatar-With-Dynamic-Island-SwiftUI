@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-extension ProfileView {
+extension ConstructorProfileView {
 
     // MARK: - ViewModel
 
@@ -134,7 +134,7 @@ extension ProfileView {
 struct New_Previews: PreviewProvider {
 
     static var previews: some View {
-        ProfileView(viewModel: .init(user: .mock())) {
+        ConstructorProfileView(viewModel: .init(user: .mock())) {
             emptyCells()
         }
     }
