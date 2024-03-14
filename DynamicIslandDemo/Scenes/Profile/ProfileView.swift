@@ -8,12 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Сделать переход цвета из темного в белый плавнее
-
-// TODO: - Адаптировать под большой размер шрифта
-
-// TODO: - исправить все косяки которые тут стали видны рпи переносе текста на UIkit
-
 // TODO: - Перенести проект в приложение
 
 // TODO: - Добавить градиент под заголовки
@@ -173,6 +167,7 @@ struct ProfileView: View {
             HStack {
                 LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: showFullAvatar, fontSize: viewModel.titleFontSize)
                     .frame(height: showFullAvatar ? 25 : viewModel.titleFontSize - 4)
+                    .padding(.leading, -(viewModel.titleFontSize - 28))
                 if showFullAvatar {
                     Spacer()
                 }
