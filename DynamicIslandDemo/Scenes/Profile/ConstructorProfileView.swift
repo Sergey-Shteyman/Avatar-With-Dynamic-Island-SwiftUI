@@ -10,6 +10,13 @@ import SwiftUI
 
 // TODO: - Добавить градиент под заголовки
 
+// --------------------------------------------------------------------------------------------------
+
+// TODO: - Сделать кликабельной при полностью открытой аватарке. И поправить отстукпы под нее
+
+// TODO: - Подумать как моэно запомнть самое верхнее состояние.
+
+// TODO: - Сделать так, чтобы кнопка изменить не нажималась когда эмодзи меню открыто
 
 // MARK: - ProfileView
 struct ConstructorProfileView<Content: View>: View {
@@ -66,6 +73,7 @@ struct ConstructorProfileView<Content: View>: View {
                 }
                 avatarView(offsetY: bounds)
                 scrollView(bounds: bounds)
+                    .zIndex(showReactionsBG == 1 ? 3 : 0)
                 navigationButtons()
                 tapArea()
             }
@@ -212,7 +220,6 @@ struct ConstructorProfileView<Content: View>: View {
                     Image("Puslan")
                         .resizable()
                         .frame(width: 30, height: 30)
-                        .zIndex(999)
                         .onTapGesture {
                             if showReactionsBG == 1 {
                                 showReactionsBG = 0
@@ -255,9 +262,9 @@ struct ConstructorProfileView<Content: View>: View {
                 Rectangle()
                     .ignoresSafeArea()
                     .frame(maxWidth: showFullAvatar ? .infinity : 90)
-                    .frame(height: showFullAvatar ? 310 : 90)
+                    .frame(height: showFullAvatar ? 250 : 90)
                     .foregroundStyle(.red)
-                    .opacity(0.1)
+                    .opacity(0.5)
                     .padding(.top, showFullAvatar ? 0 : 30)
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.25)) {
