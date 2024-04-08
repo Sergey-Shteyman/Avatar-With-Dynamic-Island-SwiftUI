@@ -164,26 +164,27 @@ struct ConstructorProfileView<Content: View>: View {
             if showReactionsBG == 1 {
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .foregroundStyle(.yellow.opacity(0.001))
+                    .foregroundStyle(.yellow.opacity(0.5))
                     .ignoresSafeArea()
                     .zIndex(2)
                     .onTapGesture {
                         showReactionsBG = 0
                     }
             }
-            
             VStack {
-                // TODO: - Сделать так чтобы перекрывала область лдля открытия аватара
                 Rectangle()
                     .foregroundStyle(.black)
                     .frame(maxWidth: bounds.size.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
                     .cornerRadius(20)
                     .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
                                                     damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
-                    .zIndex(3)
                     .padding(.top, 180)
+                    .onTapGesture {
+                        print("Привет")
+                    }
                 Spacer()
             }
+            .zIndex(3)
         }
     }
 
