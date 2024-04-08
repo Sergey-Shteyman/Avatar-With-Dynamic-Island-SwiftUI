@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Перенести проект в приложение
-
 // TODO: - Добавить градиент под заголовки
 
 
@@ -35,6 +33,8 @@ struct ConstructorProfileView<Content: View>: View {
     
     @State private var showFullAvatar: Bool = false
     @State private var isIsland: Bool = false
+    
+    @State private var showReactionsBG = 0
     
     // MARK: - Body
     
@@ -65,7 +65,7 @@ struct ConstructorProfileView<Content: View>: View {
                     }
                 }
                 avatarView(offsetY: bounds)
-                scrollView()
+                scrollView(bounds: bounds)
                 navigationButtons()
                 tapArea()
             }
@@ -140,7 +140,7 @@ struct ConstructorProfileView<Content: View>: View {
             })
     }
 
-    private func scrollView() -> some View {
+    private func scrollView(bounds: GeometryProxy) -> some View {
         OffsetObservingScrollView(
             offset: $viewModel.offset,
             showsIndicators: $viewModel.showsIndicators,
@@ -160,18 +160,66 @@ struct ConstructorProfileView<Content: View>: View {
         }
         .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
         .scrollDismissesKeyboard(.interactively)
+        .overlay(alignment: .bottom) {
+            if showReactionsBG == 1 {
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundStyle(.yellow.opacity(0.001))
+                    .ignoresSafeArea()
+                    .zIndex(2)
+                    .onTapGesture {
+                        showReactionsBG = 0
+                    }
+            }
+            
+            VStack {
+                // TODO: - Сделать так чтобы перекрывала область лдля открытия аватара
+                Rectangle()
+                    .foregroundStyle(.black)
+                    .frame(maxWidth: bounds.size.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
+                    .cornerRadius(20)
+                    .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
+                                                    damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
+                    .zIndex(3)
+                    .padding(.top, 180)
+                Spacer()
+            }
+        }
     }
 
     private func headerView() -> some View {
         VStack(spacing: 2.0) {
             Rectangle()
-                .foregroundStyle(.clear)
+                .foregroundStyle(.red)
                 .frame(maxWidth: .infinity)
                 .frame(height: showFullAvatar ? 115 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
-                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: showFullAvatar, fontSize: viewModel.titleFontSize)
-                    .frame(height: showFullAvatar ? 25 : viewModel.titleFontSize - 4)
-                    .padding(.leading, -(viewModel.titleFontSize - 28))
+//                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: showFullAvatar, fontSize: viewModel.titleFontSize)
+//                    .frame(height: showFullAvatar ? 25 : viewModel.titleFontSize - 4)
+//                    .padding(.leading, -(viewModel.titleFontSize - 28))
+                Text("Sex Sexsovich")
+                    .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(showFullAvatar ? .white : .black)
+                Button(action: {
+                    if showReactionsBG == 1 {
+                        showReactionsBG = 0
+                    } else {
+                        showReactionsBG = 1
+                    }
+                }, label: {
+                    Image("Puslan")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .zIndex(999)
+                        .onTapGesture {
+                            if showReactionsBG == 1 {
+                                showReactionsBG = 0
+                            } else {
+                                showReactionsBG = 1
+                            }
+                        }
+                })
                 if showFullAvatar {
                     Spacer()
                 }
@@ -208,7 +256,7 @@ struct ConstructorProfileView<Content: View>: View {
                     .frame(maxWidth: showFullAvatar ? .infinity : 90)
                     .frame(height: showFullAvatar ? 310 : 90)
                     .foregroundStyle(.red)
-                    .opacity(0.01)
+                    .opacity(0.1)
                     .padding(.top, showFullAvatar ? 0 : 30)
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.25)) {
