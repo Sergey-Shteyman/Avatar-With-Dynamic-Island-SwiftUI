@@ -12,11 +12,7 @@ import SwiftUI
 
 // --------------------------------------------------------------------------------------------------
 
-// TODO: - Сделать кликабельной при полностью открытой аватарке. И поправить отстукпы под нее
-
 // TODO: - Подумать как моэно запомнть самое верхнее состояние.
-
-// TODO: - Сделать так, чтобы кнопка изменить не нажималась когда эмодзи меню открыто
 
 // MARK: - ProfileView
 struct ConstructorProfileView<Content: View>: View {
@@ -182,11 +178,11 @@ struct ConstructorProfileView<Content: View>: View {
             VStack {
                 Rectangle()
                     .foregroundStyle(.black)
-                    .frame(maxWidth: bounds.size.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
+                    .frame(maxWidth: UIScreen.main.bounds.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
                     .cornerRadius(20)
                     .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
                                                     damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
-                    .padding(.top, 180)
+                    .padding(.top, showFullAvatar ? 290 : 180)
                     .onTapGesture {
                         print("Привет")
                     }
