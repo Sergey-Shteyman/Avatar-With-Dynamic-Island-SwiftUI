@@ -10,10 +10,6 @@ import SwiftUI
 
 // TODO: - Добавить градиент под заголовки
 
-// --------------------------------------------------------------------------------------------------
-
-// TODO: - Подумать как моэно запомнть самое верхнее состояние.
-
 // MARK: - ProfileView
 struct ConstructorProfileView<Content: View>: View {
     
@@ -67,10 +63,11 @@ struct ConstructorProfileView<Content: View>: View {
                         .edgesIgnoringSafeArea(.top)
                     }
                 }
-                avatarView(offsetY: bounds)
+                avatarView()
                 scrollView(bounds: bounds)
                     .zIndex(showReactionsBG == 1 ? 3 : 0)
                 navigationButtons()
+                    .zIndex(3)
                 tapArea()
             }
         }
@@ -121,7 +118,7 @@ struct ConstructorProfileView<Content: View>: View {
             .tag(Const.MainView.imageViewId)
     }
 
-    private func avatarView(offsetY: GeometryProxy) -> some View {
+    private func avatarView() -> some View {
         let offsetImage = max(-viewModel.offset.y, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         let negativeOffset = max(-viewModel.offset.y * 0.1, -Const.MainView.imageSize + Const.MainView.imageSize.percentage(1))
         return AvatarViewRepresentable(shouldShow: showFullAvatar)
@@ -182,7 +179,7 @@ struct ConstructorProfileView<Content: View>: View {
                     .cornerRadius(20)
                     .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
                                                     damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
-                    .padding(.top, showFullAvatar ? 290 : 180)
+                    .padding(.top, viewModel.scale < 0.360 ? 50 : showFullAvatar ? 280 : 180)
                     .onTapGesture {
                         print("Привет")
                     }
@@ -215,7 +212,7 @@ struct ConstructorProfileView<Content: View>: View {
                 }, label: {
                     Image("Puslan")
                         .resizable()
-                        .frame(width: 30, height: 30)
+                        .frame(width: 20, height: 20)
                         .onTapGesture {
                             if showReactionsBG == 1 {
                                 showReactionsBG = 0
@@ -228,6 +225,7 @@ struct ConstructorProfileView<Content: View>: View {
                     Spacer()
                 }
             }
+            .padding(.top, isIsland ? 0 : -3)
             HStack(spacing: 2.0) {
                 Text(viewModel.userPhoneNumber)
                 Text(Const.General.bulletPointSymbol)
@@ -281,6 +279,7 @@ struct ConstructorProfileView<Content: View>: View {
                 AnyView(Text("Edit"))
                     .foregroundStyle(showFullAvatar ? .white : .blue)
             }
+            .disabled(showReactionsBG == 1 ? true : false)
         }
         .padding(.horizontal, 16.0)
         .padding(.top, self.isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
