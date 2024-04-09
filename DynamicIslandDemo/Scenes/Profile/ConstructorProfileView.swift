@@ -162,6 +162,13 @@ struct ConstructorProfileView<Content: View>: View {
         .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
         .scrollDismissesKeyboard(.interactively)
         .overlay(alignment: .bottom) {
+            emojiMenu()
+        }
+    }
+    
+    private func emojiMenu() -> some View {
+        let groupedEmodji = groupAndSortEmodji(emoji: emodji)
+        return ZStack(alignment: .bottom) {
             if showReactionsBG == 1 {
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -173,16 +180,45 @@ struct ConstructorProfileView<Content: View>: View {
                     }
             }
             VStack {
-                Rectangle()
-                    .foregroundStyle(.black)
-                    .frame(maxWidth: UIScreen.main.bounds.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
-                    .cornerRadius(20)
-                    .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
-                                                    damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
-                    .padding(.top, viewModel.scale < 0.360 ? 50 : showFullAvatar ? 280 : 180)
-                    .onTapGesture {
-                        print("Привет")
+                ScrollView {
+                    ScrollViewReader { _ in
+                        VStack(alignment: .leading, spacing: 0) {
+                            ForEach(groupedEmodji, id: \.key) { (key: String, value: [Emoji]) in
+                                Text(key)
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 15))
+                                    .id(key)
+                                    .padding(.top, 5)
+
+                                VStack(alignment: .leading, spacing: 0) {
+                                    let chunkedValue = value.chunked(into: 6)
+
+                                    ForEach(0..<chunkedValue.count, id: \.self) { idx in
+                                        HStack {
+                                            ForEach(chunkedValue[idx], id: \.uuid) { sticker in
+                                                Image(uiImage: sticker.image)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: UIScreen.main.bounds.width / 9, height: 60)
+                                                    .padding(.horizontal, 3)
+                                                    .onTapGesture {
+                                                        
+                                                    }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
+                }
+                .padding(.top, 5)
+                .frame(maxWidth: UIScreen.main.bounds.width - 32, maxHeight: showReactionsBG == 1 ? 330 : 0)
+                .background(.black)
+                .cornerRadius(20)
+                .animation(.interpolatingSpring(stiffness: showReactionsBG == 1 ? 300 : 600,
+                                                damping: showReactionsBG == 1 ? 21 : 60).delay(0.05), value: showReactionsBG)
+                .padding(.top, viewModel.scale < 0.360 ? 50 : showFullAvatar ? 280 : 180)
                 Spacer()
             }
             .zIndex(3)
@@ -196,9 +232,6 @@ struct ConstructorProfileView<Content: View>: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: showFullAvatar ? 115 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
             HStack {
-//                LabelViewRepresentable(text: "PuslAnus", isShowFullAvatar: showFullAvatar, fontSize: viewModel.titleFontSize)
-//                    .frame(height: showFullAvatar ? 25 : viewModel.titleFontSize - 4)
-//                    .padding(.leading, -(viewModel.titleFontSize - 28))
                 Text("Sex Sexsovich")
                     .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize))
                     .fontWeight(.semibold)
@@ -284,6 +317,11 @@ struct ConstructorProfileView<Content: View>: View {
         .padding(.horizontal, 16.0)
         .padding(.top, self.isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
     }
+    
+    private func groupAndSortEmodji(emoji: [Emoji]) -> [(key: String, value: [Emoji])] {
+        let grouped = Dictionary(grouping: emoji) { $0.name }
+        return Array(grouped).sorted(by: { $0.key < $1.key })
+    }
 }
 
 // MARK: - PreviewProvider
@@ -292,6 +330,46 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ConstructorProfileView(viewModel: .init(user: .mock())) {
             emptyCells()
+        }
+    }
+}
+
+struct Emoji {
+    let uuid = UUID()
+    let id: String
+    let name: String
+    let image: UIImage
+}
+
+var emodji: [Emoji] = [
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "Puslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+    Emoji(id: "72", name: "shmuslan", image: UIImage(named: "Puslan")!),
+]
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
         }
     }
 }
