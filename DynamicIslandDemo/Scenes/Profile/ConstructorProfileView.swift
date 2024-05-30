@@ -154,7 +154,7 @@ struct ConstructorProfileView<Content: View>: View {
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
                 Section( header: headerView()) {
-                    ForEach(0..<2) { _ in
+                    ForEach(0..<20) { _ in
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
@@ -173,13 +173,15 @@ struct ConstructorProfileView<Content: View>: View {
     }
     
     private func headerView() -> some View {
-        VStack(spacing: 5.0) {
+        VStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack {
-                    Text(viewModel.userName)
+                    Text("Sergey")
                         .font(.system(size: 22, weight: .semibold))
                         .scaleEffect(viewModel.textScale)
                         .foregroundStyle(showFullAvatar ? .white : .black)
+                        .padding(.top, -3)
+                        .padding(.bottom, isIsland ? 6 : 10)
                     if showFullAvatar {
                         Spacer()
                     }
@@ -286,6 +288,11 @@ struct ConstructorProfileView<Content: View>: View {
 
     private func navigationButtons() -> some View {
         HStack {
+            Button(action: {
+                dismiss()
+            }, label: {
+                Text("Button")
+            })
             Spacer()
             Button {
                 dismiss()
