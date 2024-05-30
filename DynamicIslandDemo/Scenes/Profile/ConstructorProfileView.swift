@@ -14,6 +14,8 @@ import SwiftUI
 
 // TODO: - Сделать так, чтобы имя пользователя не уезжало вниз при перетягивании
 
+// TODO: - Сделать так чтобы контент подтягивался к верху при свернутой полностью аватарке
+
 // TODO: - Добавить градиент под заголовки
 
 // MARK: - ConstructorProfileView
@@ -181,7 +183,7 @@ struct ConstructorProfileView<Content: View>: View {
                         .scaleEffect(viewModel.textScale)
                         .foregroundStyle(showFullAvatar ? .white : .black)
                         .padding(.top, -3)
-                        .padding(.bottom, isIsland ? 6 : 10)
+                        .padding(.bottom, viewModel.scale < 0.4 ? isIsland ? 6 : 10 : 4)
                     if showFullAvatar {
                         Spacer()
                     }
@@ -194,7 +196,7 @@ struct ConstructorProfileView<Content: View>: View {
             }
             HStack(spacing: 4.0) {
                 Text("\(viewModel.offset.y)")
-                Text(Const.General.bulletPointSymbol)
+                Text("\(viewModel.scale)")
                 Text(viewModel.userNickname)
                 if showFullAvatar {
                     Spacer()
@@ -203,7 +205,7 @@ struct ConstructorProfileView<Content: View>: View {
             .foregroundColor(Color(uiColor: .systemGray))
             .opacity(viewModel.headerOpacity)
         }
-        .offset(y : showFullAvatar ? 180 : 0)
+        .offset(y : showFullAvatar ? 190 : 0)
         .id(Const.MainView.headerViewId)
     }
     
