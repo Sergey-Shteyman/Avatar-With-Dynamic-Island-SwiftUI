@@ -6,7 +6,7 @@
 //  Copyright © 2023 SKS. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Const
 
@@ -35,7 +35,7 @@ enum Const {
 
         static let imageTopPadding: CGFloat = 8.0
         static let imageSize: CGFloat = 90.0
-        static let fullImageSize: CGFloat = 375
+        static let fullImageSize: CGFloat = UIScreen.main.bounds.width + 50
     }
 
     enum OffsetObservingScrollView {

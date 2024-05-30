@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E94F6772BC67B6B00C8072A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5E94F6762BC67B6B00C8072A /* Lottie */; };
 		5EAF9DE02B9EEA2000C926C6 /* InitialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF9DDF2B9EEA2000C926C6 /* InitialView.swift */; };
 		5EAF9DE22B9EEBD900C926C6 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF9DE12B9EEBD900C926C6 /* AvatarView.swift */; };
 		5EF38D232BA21E6F003B3F70 /* LableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF38D222BA21E6F003B3F70 /* LableView.swift */; };
@@ -64,6 +65,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4E312AC2A84F93E00A28192 /* SwiftUIIntrospect in Frameworks */,
+				5E94F6772BC67B6B00C8072A /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +256,7 @@
 			name = DynamicIslandDemo;
 			packageProductDependencies = (
 				C4E312AB2A84F93E00A28192 /* SwiftUIIntrospect */,
+				5E94F6762BC67B6B00C8072A /* Lottie */,
 			);
 			productName = DynamicIslandSample;
 			productReference = C41E45502A83A826009470CB /* DynamicIslandDemo.app */;
@@ -285,6 +288,7 @@
 			mainGroup = C41E45472A83A826009470CB;
 			packageReferences = (
 				C4E312AA2A84F93E00A28192 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				5E94F6752BC67B6B00C8072A /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = C41E45512A83A826009470CB /* Products */;
 			projectDirPath = "";
@@ -558,6 +562,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5E94F6752BC67B6B00C8072A /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.2;
+			};
+		};
 		C4E312AA2A84F93E00A28192 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
@@ -569,6 +581,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5E94F6762BC67B6B00C8072A /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5E94F6752BC67B6B00C8072A /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		C4E312AB2A84F93E00A28192 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C4E312AA2A84F93E00A28192 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;

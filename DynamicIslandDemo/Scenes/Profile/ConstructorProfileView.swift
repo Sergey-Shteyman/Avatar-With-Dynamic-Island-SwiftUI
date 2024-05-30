@@ -8,9 +8,15 @@
 
 import SwiftUI
 
+// TODO: - Настроить высоту панели навигации
+
+// TODO: - Сделать адапативную верстку под разные модели айфонов
+
+// TODO: - Сделать так, чтобы имя пользователя не уезжало вниз при перетягивании
+
 // TODO: - Добавить градиент под заголовки
 
-// MARK: - ProfileView
+// MARK: - ConstructorProfileView
 struct ConstructorProfileView<Content: View>: View {
     
     @Environment(\.dismiss) var dismiss
@@ -68,7 +74,7 @@ struct ConstructorProfileView<Content: View>: View {
                     .zIndex(showReactionsBG == 1 ? 3 : 0)
                 navigationButtons()
                     .zIndex(3)
-                tapArea()
+//                tapArea()
             }
         }
         .toolbar(.hidden)
@@ -129,12 +135,12 @@ struct ConstructorProfileView<Content: View>: View {
             .offset(y: viewModel.offset.y < 0 ? negativeOffset : offsetImage)
             .onChange(of: viewModel.offset.y, perform: { offset in
                 if offset <= -30 && !showFullAvatar  {
-                    withAnimation(.easeInOut(duration: 0.25)) {
+                    withAnimation(.easeInOut(duration: 0.15)) {
                         showFullAvatar = true
                     }
                 }
                 if offset >= 10 && showFullAvatar {
-                    withAnimation(.easeInOut(duration: 0.25)) {
+                    withAnimation(.easeInOut(duration: 0.15)) {
                         showFullAvatar = false
                     }
                 }
@@ -142,18 +148,18 @@ struct ConstructorProfileView<Content: View>: View {
     }
 
     private func scrollView(bounds: GeometryProxy) -> some View {
-        OffsetObservingScrollView(
-            offset: $viewModel.offset,
-            showsIndicators: $viewModel.showsIndicators,
-            isHeaderPagingEnabled: $viewModel.isHeaderPagingEnabled
-        ) {
+        OffsetObservingScrollView(offset: $viewModel.offset) {
             LazyVStack(
                 alignment: .center,
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
-                Section(header: headerView()) {
-                    content
-                        .padding(.top, viewModel.offset.y > 0 ? viewModel.offset.y / 9 : 0)
+                Section( header: headerView()) {
+                    ForEach(0..<2) { _ in
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(Color.purple.opacity(0.5))
+                            .frame(height: 60)
+                    }
+                    .offset(y : showFullAvatar ? 200 : 0)
                 }
             }
             .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 30)
@@ -164,6 +170,39 @@ struct ConstructorProfileView<Content: View>: View {
         .overlay(alignment: .bottom) {
             emojiMenu()
         }
+    }
+    
+    private func headerView() -> some View {
+        VStack(spacing: 5.0) {
+            VStack(spacing: 0) {
+                HStack {
+                    Text(viewModel.userName)
+                        .font(.system(size: 22, weight: .semibold))
+                        .scaleEffect(viewModel.textScale)
+                        .foregroundStyle(showFullAvatar ? .white : .black)
+                    if showFullAvatar {
+                        Spacer()
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .background(!showFullAvatar && viewModel.offset.y > 150 ? Color(uiColor: .systemGray6) : .clear)
+                Divider()
+                    .padding(.horizontal, -16)
+                    .opacity(!showFullAvatar && viewModel.offset.y > 150 ? 1 : 0)
+            }
+            HStack(spacing: 4.0) {
+                Text("\(viewModel.offset.y)")
+                Text(Const.General.bulletPointSymbol)
+                Text(viewModel.userNickname)
+                if showFullAvatar {
+                    Spacer()
+                }
+            }
+            .foregroundColor(Color(uiColor: .systemGray))
+            .opacity(viewModel.headerOpacity)
+        }
+        .offset(y : showFullAvatar ? 180 : 0)
+        .id(Const.MainView.headerViewId)
     }
     
     private func emojiMenu() -> some View {
@@ -196,10 +235,10 @@ struct ConstructorProfileView<Content: View>: View {
                                     ForEach(0..<chunkedValue.count, id: \.self) { idx in
                                         HStack {
                                             ForEach(chunkedValue[idx], id: \.uuid) { sticker in
-                                                Image(uiImage: sticker.image)
+                                                Image("boxer-64x64-3818895")
                                                     .resizable()
                                                     .aspectRatio(contentMode: .fit)
-                                                    .frame(width: UIScreen.main.bounds.width / 9, height: 60)
+                                                    .frame(width: UIScreen.main.bounds.width / 11, height: 60)
                                                     .padding(.horizontal, 3)
                                                     .onTapGesture {
                                                         
@@ -223,64 +262,6 @@ struct ConstructorProfileView<Content: View>: View {
             }
             .zIndex(3)
         }
-    }
-
-    private func headerView() -> some View {
-        VStack(spacing: 2.0) {
-            Rectangle()
-                .foregroundStyle(.red)
-                .frame(maxWidth: .infinity)
-                .frame(height: showFullAvatar ? 115 + (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize) : 0)
-            HStack {
-                Text("Sex Sexsovich")
-                    .font(showFullAvatar ? .title3 : .system(size: viewModel.titleFontSize))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(showFullAvatar ? .white : .black)
-                Button(action: {
-                    if showReactionsBG == 1 {
-                        showReactionsBG = 0
-                    } else {
-                        showReactionsBG = 1
-                    }
-                }, label: {
-                    Image("Puslan")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .onTapGesture {
-                            if showReactionsBG == 1 {
-                                showReactionsBG = 0
-                            } else {
-                                showReactionsBG = 1
-                            }
-                        }
-                })
-                if showFullAvatar {
-                    Spacer()
-                }
-            }
-            .padding(.top, isIsland ? 0 : -3)
-            HStack(spacing: 2.0) {
-                Text(viewModel.userPhoneNumber)
-                Text(Const.General.bulletPointSymbol)
-                Text(viewModel.userNickname)
-                if showFullAvatar {
-                    Spacer()
-                }
-            }
-            .padding(.top, showFullAvatar ? 0 : 10)
-            .frame(height: max(showFullAvatar ? 20 : 20 - pow(viewModel.offset.y * 0.05, 2), isIsland ? 4 : 8)) // Сделал экспоненциальный рост с минимальным значением 4 или 8
-            .foregroundColor(Color(uiColor: .systemGray))
-            .font(.system(size: viewModel.descriptionFontSize, weight: .regular))
-            .opacity(viewModel.headerOpacity)
-            .padding(.bottom, showFullAvatar ? viewModel.headerPadding + 20.0 - (28 - UIFont.preferredFont(forTextStyle: .title1).pointSize)  : viewModel.headerPadding) // 25 если увеличенный и 10 если не увеличенный
-            Divider()
-                .opacity(!showFullAvatar && viewModel.offset.y > 90 ? 1 : 0)
-                .padding(.horizontal, -16)
-        }
-        .frame(maxWidth: .infinity)
-        .background(!showFullAvatar && viewModel.offset.y > 50 ? Color(uiColor: .systemGray6) : .clear)
-        .id(Const.MainView.headerViewId)
-        .offset(y: showFullAvatar ?  viewModel.offset.y * 0.3 : 0)
     }
     
     private func tapArea() -> some View {
@@ -372,4 +353,33 @@ extension Array {
             Array(self[$0..<Swift.min($0 + size, count)])
         }
     }
+}
+
+
+import Lottie
+
+struct LottieView: UIViewRepresentable {
+    var name: String
+    var loopMode: LottieLoopMode
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        
+        let animationView = LottieAnimationView(name: name)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode =  self.loopMode
+        animationView.play()
+        
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(animationView)
+        
+        NSLayoutConstraint.activate([
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            animationView.heightAnchor.constraint(equalTo: view.heightAnchor)
+        ])
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }

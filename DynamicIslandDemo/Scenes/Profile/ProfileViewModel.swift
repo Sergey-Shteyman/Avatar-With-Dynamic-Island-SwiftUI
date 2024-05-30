@@ -43,6 +43,12 @@ extension ConstructorProfileView {
             let scale = (percentage * (0 - 1) / (offset.y > 0 ? 100 : 300)) + 1
             return scale
         }
+        
+        var textScale: CGFloat {
+            let percentage = min(offset.y, Const.MainView.imageSize)
+            let scale = (percentage * (0 - 1) / 400) + 1
+            return min(scale, 1)
+        }
 
         var islandScale: CGFloat {
             let coefficient: CGFloat = isZoomEffectEnabled ? 1.2 : 1.0

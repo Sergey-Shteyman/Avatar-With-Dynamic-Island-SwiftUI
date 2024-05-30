@@ -85,7 +85,7 @@ final class AvatarView: UIView {
     }
     
     func shouldShowFullAvatar() {
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.15, animations: {
             self.avatarImageView.layer.cornerRadius = 0
             self.heighAnchorForHiddenAvatar?.isActive = false
             self.widthAnchorForHiddenAvatar?.isActive = false
@@ -98,7 +98,7 @@ final class AvatarView: UIView {
     }
     
     func shouldHideFullAvatar() {
-        UIView.animate(withDuration: 0.25, animations: {
+        UIView.animate(withDuration: 0.15, animations: {
             self.avatarImageView.layer.cornerRadius = 45
             self.heighAnchorForFullAvatar?.isActive = false
             self.widthAnchorForFullAvatar?.isActive = false

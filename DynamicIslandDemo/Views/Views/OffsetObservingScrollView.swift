@@ -15,8 +15,6 @@ struct OffsetObservingScrollView<Content: View>: View {
     // MARK: - Internal Properties
 
     @Binding var offset: CGPoint
-    @Binding var showsIndicators: Bool
-    @Binding var isHeaderPagingEnabled: Bool
     @ViewBuilder var content: () -> Content
 
     var axes: Axis.Set = [.vertical]
@@ -27,7 +25,7 @@ struct OffsetObservingScrollView<Content: View>: View {
 
     var body: some View {
         ScrollViewReader { proxy in
-            ScrollView(axes, showsIndicators: showsIndicators) {
+            ScrollView(axes) {
                 PositionObservingView(
                     coordinateSpace: .named(Const.OffsetObservingScrollView.coordinateSpaceName),
                     position: Binding(
@@ -47,9 +45,13 @@ struct OffsetObservingScrollView<Content: View>: View {
             .onChange(
                 of: isScrolling,
                 perform: { _ in
-                    guard isHeaderPagingEnabled,
-                           offset.y > 0,
+                    guard offset.y > 0 && offset.y < 165,
                           !isScrolling else { return }
+//                    guard  offset.y < Const.OffsetObservingScrollView.openOffsetPosition && offset.y > 0,
+//                          !isScrolling else { return }
+//                    guard isHeaderPagingEnabled,
+//                           offset.y > 0,
+//                          !isScrolling else { return }
                     let shouldShowBottom = offset.y > Const.OffsetObservingScrollView.openOffsetPosition / 2
                     let anchor: UnitPoint = shouldShowBottom ? .top : .bottom
                     withAnimation {
