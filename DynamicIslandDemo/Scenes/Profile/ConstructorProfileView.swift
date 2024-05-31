@@ -155,19 +155,18 @@ struct ConstructorProfileView<Content: View>: View {
                 alignment: .center,
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
-                Section( header: headerView()) {
+                Section(header: headerView()) {
                     ForEach(0..<20) { _ in
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
                     }
-                    .offset(y : showFullAvatar ? 200 : 0)
                 }
             }
-            .padding(.top, Const.MainView.imageSize + Const.MainView.imageTopPadding + 30)
+            .offset(y : showFullAvatar ? Const.MainView.fullImageSize : getSafeArea().top + Const.MainView.imageSize + 45)
             .padding(.horizontal, 16)
         }
-        .padding(.top, isIsland ? Const.MainView.imageTopPadding : Const.MainView.imageTopPadding + 2)
+        .ignoresSafeArea()
         .scrollDismissesKeyboard(.interactively)
         .overlay(alignment: .bottom) {
             emojiMenu()
@@ -183,7 +182,6 @@ struct ConstructorProfileView<Content: View>: View {
                         .scaleEffect(viewModel.textScale)
                         .foregroundStyle(showFullAvatar ? .white : .black)
                         .padding(.top, -3)
-                        .padding(.bottom, viewModel.scale < 0.4 ? isIsland ? 6 : 10 : 4)
                     if showFullAvatar {
                         Spacer()
                     }
@@ -205,7 +203,6 @@ struct ConstructorProfileView<Content: View>: View {
             .foregroundColor(Color(uiColor: .systemGray))
             .opacity(viewModel.headerOpacity)
         }
-        .offset(y : showFullAvatar ? 190 : 0)
         .id(Const.MainView.headerViewId)
     }
     

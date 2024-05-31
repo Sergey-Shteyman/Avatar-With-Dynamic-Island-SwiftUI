@@ -81,17 +81,18 @@ final class AvatarView: UIView {
         widthAnchorForHiddenAvatar?.isActive = true
         
         heighAnchorForFullAvatar = avatarImageView.heightAnchor.constraint(equalToConstant: Const.MainView.fullImageSize)
-        widthAnchorForFullAvatar = avatarImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
+        widthAnchorForFullAvatar = avatarImageView.widthAnchor.constraint(equalToConstant: Const.MainView.fullImageSize)
     }
     
     func shouldShowFullAvatar() {
+        let topPading = getSafeArea().top
         UIView.animate(withDuration: 0.15, animations: {
             self.avatarImageView.layer.cornerRadius = 0
             self.heighAnchorForHiddenAvatar?.isActive = false
             self.widthAnchorForHiddenAvatar?.isActive = false
             self.heighAnchorForFullAvatar?.isActive = true
             self.widthAnchorForFullAvatar?.isActive = true
-            self.adaptiveTopAnchor?.constant = -60
+            self.adaptiveTopAnchor?.constant = -topPading
             self.haptics(.medium)
             self.layoutIfNeeded()
         })
