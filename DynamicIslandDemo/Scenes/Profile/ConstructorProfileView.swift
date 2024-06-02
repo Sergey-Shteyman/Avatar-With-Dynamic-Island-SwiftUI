@@ -10,8 +10,6 @@ import SwiftUI
 
 // TODO: - Настроить высоту панели навигации
 
-// TODO: - Сделать адапативную верстку под разные модели айфонов
-
 // TODO: - Сделать так, чтобы имя пользователя не уезжало вниз при перетягивании
 
 // TODO: - Сделать так чтобы контент подтягивался к верху при свернутой полностью аватарке
@@ -156,16 +154,17 @@ struct ConstructorProfileView<Content: View>: View {
                 pinnedViews: viewModel.isHeaderPinningEnabled ? [.sectionHeaders] : []
             ) {
                 Section(header: headerView()) {
-                    ForEach(0..<20) { _ in
+                    ForEach(0..<25) { _ in
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
                     }
                 }
             }
-            .offset(y : showFullAvatar ? Const.MainView.fullImageSize : getSafeArea().top + Const.MainView.imageSize + 45)
+            .offset(y : showFullAvatar ? Const.MainView.fullImageSize - getSafeArea().top - 65 : Const.MainView.imageSize + 30)
             .padding(.horizontal, 16)
         }
+        .padding(.top, getSafeArea().top + 5)
         .ignoresSafeArea()
         .scrollDismissesKeyboard(.interactively)
         .overlay(alignment: .bottom) {
@@ -181,7 +180,7 @@ struct ConstructorProfileView<Content: View>: View {
                         .font(.system(size: 22, weight: .semibold))
                         .scaleEffect(viewModel.textScale)
                         .foregroundStyle(showFullAvatar ? .white : .black)
-                        .padding(.top, -3)
+                        .padding(.bottom, 5) // для панели навигации пока что сделал
                     if showFullAvatar {
                         Spacer()
                     }
@@ -195,7 +194,7 @@ struct ConstructorProfileView<Content: View>: View {
             HStack(spacing: 4.0) {
                 Text("\(viewModel.offset.y)")
                 Text("\(viewModel.scale)")
-                Text(viewModel.userNickname)
+                Text("\(getSafeArea().top)")
                 if showFullAvatar {
                     Spacer()
                 }
@@ -315,6 +314,7 @@ struct ConstructorProfileView<Content: View>: View {
 struct ProfileView_Previews: PreviewProvider {
 
     static var previews: some View {
+//        InitialView()
         ConstructorProfileView(viewModel: .init(user: .mock())) {
             emptyCells()
         }
