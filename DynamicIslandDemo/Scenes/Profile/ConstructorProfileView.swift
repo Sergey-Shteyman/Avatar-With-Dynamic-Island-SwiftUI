@@ -134,12 +134,12 @@ struct ConstructorProfileView<Content: View>: View {
             .opacity(showFullAvatar ? 1 : viewModel.avatarOpacity)
             .offset(y: viewModel.offset.y < 0 ? negativeOffset : offsetImage)
             .onChange(of: viewModel.offset.y, perform: { offset in
-                if offset <= -30 && !showFullAvatar  {
+                if offset <= -15 && !showFullAvatar  {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         showFullAvatar = true
                     }
                 }
-                if offset >= 10 && showFullAvatar {
+                if offset >= 5 && showFullAvatar {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         showFullAvatar = false
                     }
@@ -235,7 +235,7 @@ struct ConstructorProfileView<Content: View>: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .background(!showFullAvatar ? Color(uiColor: .systemGray6) : .clear)
+                .background(!showFullAvatar && viewModel.offset.y > 10 ? Color(uiColor: .systemGray6) : .clear)
                 Divider()
                     .padding(.horizontal, -16)
                     .opacity(!showFullAvatar && viewModel.offset.y > 150 ? 1 : 0)
