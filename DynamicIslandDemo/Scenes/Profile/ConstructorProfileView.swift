@@ -198,6 +198,7 @@ struct ConstructorProfileView<Content: View>: View {
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
                     }
+                    .offset(y: showFullAvatar ? 15 : 0)
                 }
             }
             .offset(y : showFullAvatar ? Const.MainView.fullImageSize - getSafeArea().top - 65 : Const.MainView.imageSize + 30)
@@ -241,6 +242,7 @@ struct ConstructorProfileView<Content: View>: View {
             .foregroundColor(Color(uiColor: .systemGray))
             .opacity(viewModel.headerOpacity)
         }
+        .offset(y: showFullAvatar ? viewModel.offset.y * 0.1 : 0)
         .id(Const.MainView.headerViewId)
     }
     
