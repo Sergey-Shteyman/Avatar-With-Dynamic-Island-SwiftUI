@@ -197,6 +197,15 @@ struct ConstructorProfileView<Content: View>: View {
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(Color.purple.opacity(0.5))
+                            .frame(height: 60)
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(Color.purple.opacity(0.5))
+                            .frame(height: 60)
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(Color.purple.opacity(0.5))
+                            .frame(height: 60)
                     }
                     .offset(y: showFullAvatar ? 15 : 0)
                 }

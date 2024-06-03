@@ -45,13 +45,8 @@ struct OffsetObservingScrollView<Content: View>: View {
             .onChange(
                 of: isScrolling,
                 perform: { _ in
-                    guard offset.y > 0 && offset.y < 165,
+                    guard  offset.y < Const.OffsetObservingScrollView.openOffsetPosition && offset.y > 0,
                           !isScrolling else { return }
-//                    guard  offset.y < Const.OffsetObservingScrollView.openOffsetPosition && offset.y > 0,
-//                          !isScrolling else { return }
-//                    guard isHeaderPagingEnabled,
-//                           offset.y > 0,
-//                          !isScrolling else { return }
                     let shouldShowBottom = offset.y > Const.OffsetObservingScrollView.openOffsetPosition / 2
                     let anchor: UnitPoint = shouldShowBottom ? .top : .bottom
                     withAnimation {
