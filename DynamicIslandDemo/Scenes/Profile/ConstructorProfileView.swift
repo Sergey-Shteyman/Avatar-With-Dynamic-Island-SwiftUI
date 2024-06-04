@@ -8,12 +8,6 @@
 
 import SwiftUI
 
-// TODO: - Настроить высоту панели навигации
-
-// TODO: - Сделать так, чтобы имя пользователя не уезжало вниз при перетягивании
-
-// TODO: - Сделать так чтобы контент подтягивался к верху при свернутой полностью аватарке
-
 // TODO: - Добавить градиент под заголовки
 
 // MARK: - ConstructorProfileView
@@ -161,51 +155,51 @@ struct ConstructorProfileView<Content: View>: View {
                         RoundedRectangle(cornerRadius: 25, style: .continuous)
                             .fill(Color.purple.opacity(0.5))
                             .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
-                        RoundedRectangle(cornerRadius: 25, style: .continuous)
-                            .fill(Color.purple.opacity(0.5))
-                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
+//                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+//                            .fill(Color.purple.opacity(0.5))
+//                            .frame(height: 60)
                     }
                     .offset(y: showFullAvatar ? 15 : 0)
                 }
@@ -213,14 +207,14 @@ struct ConstructorProfileView<Content: View>: View {
             .offset(y : showFullAvatar ? Const.MainView.fullImageSize - getSafeArea().top - 65 : Const.MainView.imageSize + 30)
             .padding(.horizontal, 16)
         }
-        .padding(.top, getSafeArea().top + 5)
+        .padding(.top, getSafeArea().top + (isIsland ? 5 : 7)) // для панели навигации пока что сделал
         .ignoresSafeArea()
         .scrollDismissesKeyboard(.interactively)
         .overlay(alignment: .bottom) {
             emojiMenu()
         }
     }
-    
+
     private func headerView() -> some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
@@ -229,7 +223,7 @@ struct ConstructorProfileView<Content: View>: View {
                         .font(.system(size: 22, weight: .semibold))
                         .scaleEffect(viewModel.textScale)
                         .foregroundStyle(showFullAvatar ? .white : .black)
-                        .padding(.bottom, 5) // для панели навигации пока что сделал
+                        .padding(.bottom, 10)
                     if showFullAvatar {
                         Spacer()
                     }
@@ -248,6 +242,7 @@ struct ConstructorProfileView<Content: View>: View {
                     Spacer()
                 }
             }
+            .padding(.top, -6)
             .foregroundColor(Color(uiColor: .systemGray))
             .opacity(viewModel.headerOpacity)
         }
