@@ -68,7 +68,7 @@ struct ConstructorProfileView<Content: View>: View {
                     .zIndex(showReactionsBG == 1 ? 3 : 0)
                 navigationButtons()
                     .zIndex(3)
-//                tapArea()
+                tapArea()
             }
         }
         .toolbar(.hidden)
@@ -314,8 +314,8 @@ struct ConstructorProfileView<Content: View>: View {
             return AnyView(
                 Rectangle()
                     .ignoresSafeArea()
-                    .frame(maxWidth: showFullAvatar ? .infinity : 90)
-                    .frame(height: showFullAvatar ? 250 : 90)
+                    .frame(maxWidth: showFullAvatar ? .infinity : Const.MainView.imageSize)
+                    .frame(height: showFullAvatar ? Const.MainView.fullImageSize - 80 : Const.MainView.imageSize)
                     .foregroundStyle(.red)
                     .opacity(0.5)
                     .padding(.top, showFullAvatar ? 0 : 30)
